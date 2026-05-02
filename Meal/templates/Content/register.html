@@ -1,0 +1,84 @@
+{% extends 'include/base.html' %}
+{% block title %}Merry Christmas{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+  <div class="card p-4 shadow">
+
+    <h2 class="fw-bold text-center mb-4">
+      🎄 Create your <span class="text-primary">Meal</span><span class="text-danger">Box</span> account
+    </h2>
+
+    <form method="POST" class="card p-4 border-0">
+      {% csrf_token %}
+
+      <!-- Username -->
+      <div class="mb-3">
+        <label class="form-label fw-semibold">Username</label>
+        <div class="input-group">
+          <span class="input-group-text bg-white">
+            <i class="fa-solid fa-user text-primary"></i>
+          </span>
+          <input type="text" name="username" class="form-control"
+                 value="{{ form.username.value|default:'' }}"
+                 placeholder="Enter username" required>
+        </div>
+        <div class="text-danger small">{{ form.username.errors }}</div>
+      </div>
+
+      <!-- Email -->
+      <div class="mb-3">
+        <label class="form-label fw-semibold">Email</label>
+        <div class="input-group">
+          <span class="input-group-text bg-white">
+            <i class="fa-solid fa-envelope text-success"></i>
+          </span>
+          <input type="email" name="email" class="form-control"
+                 value="{{ form.email.value|default:'' }}"
+                 placeholder="Enter email" required>
+        </div>
+        <div class="text-danger small">{{ form.email.errors }}</div>
+      </div>
+
+      <!-- Password -->
+      <div class="mb-3">
+        <label class="form-label fw-semibold">Password</label>
+        <div class="input-group">
+          <span class="input-group-text bg-white">
+            <i class="fa-solid fa-lock text-danger"></i>
+          </span>
+          <input type="password" name="password1" class="form-control"
+                 placeholder="Enter password" required>
+        </div>
+        <div class="text-danger small">{{ form.password1.errors }}</div>
+      </div>
+
+      <!-- Confirm Password -->
+      <div class="mb-3">
+        <label class="form-label fw-semibold">Confirm Password</label>
+        <div class="input-group">
+          <span class="input-group-text bg-white">
+            <i class="fa-solid fa-lock text-primary"></i>
+          </span>
+          <input type="password" name="password2" class="form-control"
+                 placeholder="Confirm password" required>
+        </div>
+        <div class="text-danger small">{{ form.password2.errors }}</div>
+      </div>
+
+      <!-- Register -->
+      <button type="submit" class="btn btn-success w-100 my-3">
+        <i class="fa-solid fa-user-plus me-2"></i>Register
+      </button>
+
+      <p class="text-center mt-2" style="font-size: .85rem;">
+        Already have an account?
+        <a href="{% url 'login' %}" class="text-decoration-none fw-semibold">
+          Login
+        </a>
+      </p>
+
+    </form>
+  </div>
+</div>
+{% endblock %}

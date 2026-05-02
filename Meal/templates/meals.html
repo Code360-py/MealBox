@@ -1,0 +1,32 @@
+{% extends 'include/base.html' %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+
+  <!-- Category Header -->
+  <div class="card bg-dark text-white p-3 text-center shadow-lg mb-4">
+    <h2 class="fw-bold">Selected Category</h2>
+    <p class="fw-light">{{ category }}</p>
+  </div>
+
+  <!-- Meals Grid -->
+  <div class="row">
+    {% for meal in meals %}
+    <div class="col-6 col-md-4 col-lg-3 mb-4 d-flex align-items-stretch">
+      <div class="card text-center shadow-sm w-100">
+        <img src="{{ meal.strMealThumb }}" class="card-img-top img-thumbnail" alt="{{ meal.strMeal }}">
+        <div class="card-body">
+          <p><span class="badge text-bg-warning mb-2">{{ meal.idMeal }}</span></p>
+          <h5 class="card-title">{{ meal.strMeal }}</h5>
+          <a class="btn btn-info mt-2" href="{% url 'recipe' meal.idMeal %}">
+            <i class="fa-solid fa-eye me-1"></i> View Details
+          </a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,114 @@
+{% extends 'include/base.html' %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+
+  <!-- Recipes Header -->
+  <div class="card bg-dark text-white p-4 text-center shadow-lg mb-4">
+    <h2 class="fw-bold">Recipes</h2>
+    <p class="fw-light">
+      Browse over 1200 family-friendly recipes! Make a recipe?
+      Be sure to tag us on social @MealBox!
+    </p>
+  </div>
+
+  <!-- Search Bar -->
+  <form method="GET" class="my-4">
+    <div class="input-group">
+      <span class="input-group-text">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </span>
+      <input type="text"
+             name="q"
+             value="{{ query }}"
+             class="form-control"
+             placeholder="Search meals by name...">
+      <button class="btn btn-primary" type="submit">
+        Search
+      </button>
+    </div>
+  </form>
+
+  {% if query %}
+  <!-- Search Results -->
+  <h4 class="text-center my-4">
+    Search Results for "{{ query }}"
+  </h4>
+
+  <div class="row">
+    {% if meals %}
+      {% for meal in meals %}
+      <div class="col-6 col-md-4 col-lg-3 mb-4 d-flex align-items-stretch">
+        <div class="card shadow-sm text-center w-100">
+          <img src="{{ meal.strMealThumb }}"
+               class="card-img-top"
+               alt="{{ meal.strMeal }}">
+          <div class="card-body">
+            <h6 class="card-title">{{ meal.strMeal }}</h6>
+            <a href="{% url 'recipe' meal.idMeal %}"
+               class="btn btn-info btn-sm mt-2">
+              <i class="fa-solid fa-eye me-1"></i> View Recipe
+            </a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    {% else %}
+      <p class="text-center text-muted">No meals found.</p>
+    {% endif %}
+  </div>
+
+  {% else %}
+  <!-- Categories Section -->
+  <h3 class="text-center my-4">Search by Categories</h3>
+
+  <div class="row">
+    {% for category in categories %}
+    <div class="col-6 col-md-4 col-lg-3 mb-4 d-flex align-items-stretch">
+      <div class="card shadow-sm text-center w-100">
+        <img src="{{ category.strCategoryThumb }}"
+             class="card-img-top"
+             alt="{{ category.strCategory }}">
+        <div class="card-body">
+          <h6 class="card-title">{{ category.strCategory }}</h6>
+          <a href="{% url 'category' category.strCategory %}"
+             class="btn btn-primary btn-sm mt-2">
+            <i class="fa-solid fa-book me-1"></i> Browse
+          </a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Christmas Specials -->
+  <div class="card bg-danger text-white p-4 text-center shadow-lg my-4">
+    <h2 class="fw-bold">🎄 Christmas Specials</h2>
+    <p class="fw-light">
+      Celebrate Christmas with our special holiday recipes!
+    </p>
+  </div>
+
+  <div class="row">
+    {% for cake in cakes %}
+    <div class="col-6 col-md-4 col-lg-3 mb-4 d-flex align-items-stretch">
+      <div class="card shadow-sm text-center w-100">
+        <img src="{{ cake.strMealThumb }}"
+             class="card-img-top"
+             alt="{{ cake.strMeal }}">
+        <div class="card-body">
+          <h6 class="card-title">{{ cake.strMeal }}</h6>
+          <a href="{% url 'recipe' cake.idMeal %}"
+             class="btn btn-danger btn-sm mt-2">
+            <i class="fa-solid fa-eye me-1"></i> View Recipe
+          </a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+</div>
+{% endblock %}

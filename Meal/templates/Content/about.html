@@ -1,0 +1,88 @@
+{% extends 'include/base.html' %}
+{% block title %}About Us | MealBox{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+
+  <!-- Header -->
+  <div class="text-center mb-5">
+    <h1 class="fw-bold">
+      🎄 About <span class="text-primary">Meal</span><span class="text-danger">Box</span>
+    </h1>
+    <p class="text-muted mt-2">
+      Discover recipes, explore cuisines, and cook with joy.
+    </p>
+  </div>
+
+  <!-- About Section -->
+  <div class="row align-items-center mb-5">
+    <div class="col-md-6 mb-4">
+      <h3 class="fw-semibold">
+        <i class="fa-solid fa-utensils text-primary me-2"></i>Who We Are
+      </h3>
+      <p class="text-muted">
+        MealBox is a recipe discovery platform designed for food lovers.
+        We help you explore delicious recipes from around the world,
+        learn cooking methods, and enjoy every meal you make.
+      </p>
+    </div>
+    <div class="col-md-6 text-center">
+      <i class="fa-solid fa-bowl-food text-danger display-1"></i>
+    </div>
+  </div>
+
+  <!-- Features -->
+  <div class="row text-center mb-5">
+    <div class="col-md-4 mb-3">
+      <div class="card h-100 p-4 shadow-sm">
+        <i class="fa-solid fa-book-open-reader text-success fs-1 mb-3"></i>
+        <h5 class="fw-bold">Curated Recipes</h5>
+        <p class="text-muted">
+          Access a wide range of recipes powered by trusted sources.
+        </p>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+      <div class="card h-100 p-4 shadow-sm">
+        <i class="fa-solid fa-kitchen-set text-warning fs-1 mb-3"></i>
+        <h5 class="fw-bold">Cooking Methods</h5>
+        <p class="text-muted">
+          Learn techniques, tips, and tricks to cook like a pro.
+        </p>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+      <div class="card h-100 p-4 shadow-sm">
+        <i class="fa-solid fa-heart text-danger fs-1 mb-3"></i>
+        <h5 class="fw-bold">Made for Food Lovers</h5>
+        <p class="text-muted">
+          Built with passion for people who love good food.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Data Source -->
+  <div class="card p-4 text-center bg-dark text-light mb-5">
+    <h5 class="fw-bold">
+      <i class="fa-solid fa-database me-2"></i>Powered by TheMealDB
+    </h5>
+    <p class="mb-0">
+      MealBox uses the TheMealDB API to bring you authentic and diverse recipes.
+    </p>
+  </div>
+
+  <!-- Call to Action -->
+  <div class="text-center">
+    <a href="{% url 'register' %}" class="btn btn-success btn-lg me-2">
+      <i class="fa-solid fa-user-plus me-1"></i> Get Started
+    </a>
+    <a href="{% url 'home' %}" class="btn btn-outline-primary btn-lg">
+      <i class="fa-solid fa-book-open me-1"></i> Explore Recipes
+    </a>
+  </div>
+
+</div>
+{% endblock %}

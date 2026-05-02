@@ -1,0 +1,46 @@
+{% extends 'include/base.html' %}
+{% block title %}My Bookmarks | MealBox{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+
+  <h2 class="fw-bold mb-4 text-center text-primary">
+    <i class="fa-solid fa-bookmark text-warning"></i>
+    My Bookmarked Meals
+  </h2>
+
+  {% if bookmarks %}
+  <div class="row">
+    {% for bookmark in bookmarks %}
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 shadow-sm">
+
+        {% if bookmark.meal_thumb %}
+        <img src="{{ bookmark.meal_thumb }}" class="card-img-top" alt="{{ bookmark.meal_name }}">
+        {% endif %}
+
+        <div class="card-body text-center">
+          <h5 class="card-title fw-bold">{{ bookmark.meal_name }}</h5>
+
+          <form method="POST" action="{% url 'toggle_bookmark' %}">
+            {% csrf_token %}
+            <input type="hidden" name="meal_id" value="{{ bookmark.meal_id }}">
+            <button class="btn btn-outline-danger btn-sm">
+              <i class="fa-solid fa-trash"></i> Remove
+            </button>
+          </form>
+        </div>
+
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="text-center text-muted">
+    <i class="fa-regular fa-bookmark fs-1 mb-3"></i>
+    <p>No bookmarks yet. Start saving your favorite meals!</p>
+  </div>
+  {% endif %}
+
+</div>
+{% endblock %}

@@ -1,0 +1,120 @@
+{% extends 'include/base.html' %}
+{% block title %}Support | MealBox{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+
+  <!-- Header -->
+  <div class="text-center mb-5">
+    <h1 class="fw-bold">
+      🛠️ Support <span class="text-primary">Center</span>
+    </h1>
+    <p class="text-muted mt-2">
+      We’re here to help you 24/7. Find answers or reach out to us.
+    </p>
+  </div>
+
+  <!-- Support Options -->
+  <div class="row mb-5">
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 p-4 shadow-sm text-center">
+        <i class="fa-solid fa-circle-question text-primary fs-1 mb-3"></i>
+        <h5 class="fw-bold">Help & FAQs</h5>
+        <p class="text-muted">
+          Get quick answers to common questions.
+        </p>
+        <a href="#" class="btn btn-outline-primary btn-sm">
+          View FAQs
+        </a>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 p-4 shadow-sm text-center">
+        <i class="fa-solid fa-headset text-success fs-1 mb-3"></i>
+        <h5 class="fw-bold">Live Support</h5>
+        <p class="text-muted">
+          Chat with our support team anytime.
+        </p>
+        <a href="#" class="btn btn-outline-success btn-sm">
+          Start Chat
+        </a>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 p-4 shadow-sm text-center">
+        <i class="fa-solid fa-envelope-open-text text-danger fs-1 mb-3"></i>
+        <h5 class="fw-bold">Email Support</h5>
+        <p class="text-muted">
+          Send us your queries and feedback.
+        </p>
+        <a href="{% url 'contact' %}" class="btn btn-outline-danger btn-sm">
+          Contact Us
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ Section -->
+  <div class="card p-4 shadow-sm mb-5">
+    <h4 class="fw-bold mb-3">
+      <i class="fa-solid fa-circle-info text-warning me-2"></i>Frequently Asked Questions
+    </h4>
+
+    <div class="accordion" id="faqAccordion">
+
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button" data-bs-toggle="collapse" data-bs-target="#faq1">
+            How do I create an account?
+          </button>
+        </h2>
+        <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+          <div class="accordion-body">
+            Click on the Register button and fill in your details to create an account.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#faq2">
+            Is MealBox free to use?
+          </button>
+        </h2>
+        <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+          <div class="accordion-body">
+            Yes, MealBox is completely free for all users.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#faq3">
+            Where do recipes come from?
+          </button>
+        </h2>
+        <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+          <div class="accordion-body">
+            Recipes are powered by TheMealDB API.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="text-center">
+    <a href="{% url 'register' %}" class="btn btn-success btn-lg me-2">
+      <i class="fa-solid fa-user-plus me-1"></i> Get Started
+    </a>
+    <a href="{% url 'contact' %}" class="btn btn-outline-primary btn-lg">
+      <i class="fa-solid fa-paper-plane me-1"></i> Contact Support
+    </a>
+  </div>
+
+</div>
+{% endblock %}

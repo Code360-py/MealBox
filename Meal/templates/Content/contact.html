@@ -1,0 +1,98 @@
+{% extends 'include/base.html' %}
+{% block title %}Contact Us | MealBox{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+
+  <!-- Header -->
+  <div class="text-center mb-5">
+    <h1 class="fw-bold">
+      📞 Contact <span class="text-primary">Meal</span><span class="text-danger">Box</span>
+    </h1>
+    <p class="text-muted mt-2">
+      We’d love to hear from you — feel free to reach out!
+    </p>
+  </div>
+
+  <div class="row">
+    <!-- Contact Info -->
+    <div class="col-md-5 mb-4">
+      <div class="card p-4 shadow-sm h-100">
+        <h4 class="fw-bold mb-3">
+          <i class="fa-solid fa-address-book text-primary me-2"></i>Get in Touch
+        </h4>
+
+        <p class="mb-3">
+          <i class="fa-solid fa-envelope text-danger me-2"></i>
+          support@mealbox.com
+        </p>
+
+        <p class="mb-3">
+          <i class="fa-solid fa-phone text-success me-2"></i>
+          +91 98765 43210
+        </p>
+
+        <p class="mb-4">
+          <i class="fa-solid fa-location-dot text-warning me-2"></i>
+          India
+        </p>
+
+        <div class="d-flex gap-3 fs-3">
+          <a href="#" class="text-primary"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" class="text-info"><i class="fa-brands fa-telegram"></i></a>
+          <a href="#" class="text-success"><i class="fa-brands fa-whatsapp"></i></a>
+          <a href="#" class="text-dark"><i class="fa-brands fa-x-twitter"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact Form -->
+    <div class="col-md-7">
+      <div class="card p-4 shadow-sm">
+        <h4 class="fw-bold mb-3">
+          <i class="fa-solid fa-paper-plane text-success me-2"></i>Send a Message
+        </h4>
+
+        <form method="POST">
+          {% csrf_token %}
+
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Name</label>
+            <div class="input-group">
+              <span class="input-group-text bg-white">
+                <i class="fa-solid fa-user text-primary"></i>
+              </span>
+              <input type="text" name="name" class="form-control" placeholder="Your name" required>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Email</label>
+            <div class="input-group">
+              <span class="input-group-text bg-white">
+                <i class="fa-solid fa-envelope text-danger"></i>
+              </span>
+              <input type="email" name="email" class="form-control" placeholder="Your email" required>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Message</label>
+            <div class="input-group">
+              <span class="input-group-text bg-white">
+                <i class="fa-solid fa-comment text-success"></i>
+              </span>
+              <textarea name="message" rows="4" class="form-control" placeholder="Your message..." required></textarea>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-success w-100">
+            <i class="fa-solid fa-paper-plane me-2"></i>Send Message
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

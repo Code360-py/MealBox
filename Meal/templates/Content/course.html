@@ -1,0 +1,60 @@
+{% extends 'include/base.html' %}
+{% block title %}Courses | MealBox{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+
+  <!-- Header -->
+  <div class="text-center mb-5">
+    <h1 class="fw-bold">
+      📘 Cooking <span class="text-primary">Courses</span>
+    </h1>
+    <p class="text-muted mt-2">
+      Learn cooking step by step, from basics to mastery.
+    </p>
+  </div>
+
+  <!-- Courses -->
+  <div class="row">
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 p-4 shadow-sm text-center">
+        <i class="fa-solid fa-fire-burner text-danger fs-1 mb-3"></i>
+        <h5 class="fw-bold">Beginner Basics</h5>
+        <p class="text-muted">
+          Learn knife skills, heat control, and kitchen safety.
+        </p>
+        <a href="#" class="btn btn-outline-primary btn-sm">
+          Start Learning
+        </a>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 p-4 shadow-sm text-center">
+        <i class="fa-solid fa-kitchen-set text-success fs-1 mb-3"></i>
+        <h5 class="fw-bold">Home Cooking</h5>
+        <p class="text-muted">
+          Master everyday meals with simple ingredients.
+        </p>
+        <a href="#" class="btn btn-outline-success btn-sm">
+          View Course
+        </a>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 p-4 shadow-sm text-center">
+        <i class="fa-solid fa-star text-warning fs-1 mb-3"></i>
+        <h5 class="fw-bold">Professional Skills</h5>
+        <p class="text-muted">
+          Advanced techniques used by professional chefs.
+        </p>
+        <a href="#" class="btn btn-outline-warning btn-sm">
+          Explore
+        </a>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

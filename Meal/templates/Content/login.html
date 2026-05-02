@@ -1,0 +1,51 @@
+{% extends 'include/base.html' %}
+{% block title %}Merry Christmas{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+  <div class="card p-4 shadow">
+
+    <!-- Heading -->
+    <h2 class="fw-bold text-center mb-4">
+      🎄 Welcome to <span class="text-primary">Meal</span><span class="text-danger">Box</span>
+    </h2>
+
+    <form method="POST" class="card p-4 border-0">
+      {% csrf_token %}
+
+      <!-- Username -->
+      <div class="form-group my-3">
+        <label class="form-label fw-semibold">
+          <i class="fa-solid fa-user me-2 text-primary"></i>Username
+        </label>
+        <input name="username" type="text" class="form-control"
+               placeholder="Enter username" required>
+      </div>
+
+      <!-- Password -->
+      <div class="form-group my-3">
+        <label class="form-label fw-semibold">
+          <i class="fa-solid fa-lock me-2 text-danger"></i>Password
+        </label>
+        <input name="password" type="password" class="form-control"
+               placeholder="Enter password" required>
+      </div>
+
+      <!-- Login Button -->
+      <button type="submit" class="btn btn-success w-100 my-3">
+        <i class="fa-solid fa-right-to-bracket me-2"></i>Login
+      </button>
+    </form>
+
+    <!-- Register -->
+    <p class="text-center mt-3" style="font-size: .85rem;">
+      <i class="fa-solid fa-gift text-danger me-1"></i>
+      Don't have an account?
+      <a href="{% url 'register' %}" class="text-decoration-none fw-semibold">
+        Register
+      </a>
+    </p>
+
+  </div>
+</div>
+{% endblock %}
