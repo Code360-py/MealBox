@@ -1,4 +1,4 @@
-# MealBox v1.0
+# MealBox v2.0
 
 A lightweight recipe browser built on top of TheMealDB. Django + Bootstrap 5 with a dark neon UI.
 
@@ -6,9 +6,9 @@ Live: https://xenonstudio.pythonanywhere.com
 
 ## Overview
 
-MealBox is a recipe discovery web app. It fetches recipes, categories, images, and instructions from the public TheMealDB API and presents them in a mobile-first, iPhone-style interface. Users can browse, search, bookmark recipes, and manage their own account.
+MealBox is a recipe discovery web app. It fetches recipes, categories, images, and instructions from the public TheMealDB API and presents them in a mobile-first, iPhone-style interface.
 
-The project uses a custom session-based authentication layer. Django's built-in auth and admin apps are intentionally disabled.
+Django's built-in auth and admin apps are intentionally disabled. The project uses a custom session-based authentication layer instead.
 
 ## Features
 
@@ -51,7 +51,6 @@ The project uses a custom session-based authentication layer. Django's built-in 
 - Full-screen overlay spinner on form submit
 - Image blur-up fade-in
 - Respects prefers-reduced-motion
-- Mobile-first, with desktop fallback at 900px max content width
 
 ## Tech Stack
 
@@ -64,77 +63,17 @@ The project uses a custom session-based authentication layer. Django's built-in 
 - Fonts: Noto Sans (Google Fonts)
 - API: TheMealDB (https://www.themealdb.com/api.php)
 
-## Project Structure
-
-    MealBox/
-    |-- MealBox/
-    |   |-- __init__.py
-    |   |-- settings.py
-    |   |-- urls.py
-    |   |-- asgi.py
-    |   `-- wsgi.py
-    |-- Meal/
-    |   |-- migrations/
-    |   |-- static/
-    |   |   |-- css/style.css
-    |   |   `-- js/
-    |   |       |-- app.js
-    |   |       `-- search-history.js
-    |   |-- templates/
-    |   |   |-- include/
-    |   |   |   |-- base.html
-    |   |   |   |-- topbar.html
-    |   |   |   |-- sidebar.html
-    |   |   |   |-- bottomtabs.html
-    |   |   |   `-- footer.html
-    |   |   |-- Content/
-    |   |   |   |-- account.html
-    |   |   |   |-- about.html
-    |   |   |   |-- contact.html
-    |   |   |   |-- login.html
-    |   |   |   |-- register.html
-    |   |   |   |-- bookmarks.html
-    |   |   |   |-- christmas.html
-    |   |   |   |-- diwali.html
-    |   |   |   |-- birthday.html
-    |   |   |   `-- delete_account.html
-    |   |   |-- index.html
-    |   |   |-- search.html
-    |   |   |-- meals.html
-    |   |   `-- meal_view.html
-    |   |-- auth.py
-    |   |-- models.py
-    |   |-- urls.py
-    |   |-- views.py
-    |   |-- admin.py
-    |   |-- apps.py
-    |   `-- tests.py
-    |-- db.sqlite3
-    |-- manage.py
-    |-- requirements.txt
-    |-- .gitignore
-    `-- README.md
-
 ## Local Development
 
 1. Clone the repository
 
-    git clone https://github.com/your-username/mealbox.git
-    cd mealbox
+    git clone https://github.com/Code360-py/MealBox.git
+    cd MealBox
 
 2. Create a virtual environment
 
     python -m venv venv
-
-Activate it.
-
-Linux or macOS:
-
     source venv/bin/activate
-
-Windows:
-
-    venv\Scripts\activate
 
 3. Install dependencies
 
@@ -149,65 +88,37 @@ Windows:
 
     python manage.py runserver
 
-Open http://127.0.0.1:8000/ in your browser.
+Open http://127.0.0.1:8000/
 
 ## Environment Variables
 
-In production the app reads DJANGO_SECRET_KEY from the environment. If unset, it falls back to a development key.
-
-Set it in your shell before running in production:
+In production the app reads DJANGO_SECRET_KEY from the environment.
 
     export DJANGO_SECRET_KEY="your-long-random-secret-key-here"
 
-Generate a secure key with:
+Generate one with:
 
     python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
 
 ## Routes
 
-- / : home : Home page with categories grid and seasonal banners
-- /search/ : search : Search page with recent-search history
-- /about/ : about : About page
-- /contact/ : contact : Contact form
-- /christmas/ : christmas : Christmas recipe collection
-- /diwali/ : diwali : Diwali recipe collection
-- /birthday/ : birthday : Birthday recipe collection
-- /login/ : login : Login
-- /register/ : register : Register
-- /logout/ : logout_view : Logout
-- /account/ : account : Profile page
-- /account/dob/ : save_dob : Update date of birth
-- /account/delete/ : delete_account : Permanent account deletion
-- /bookmarks/ : bookmark_list : Saved recipes
-- /bookmark/toggle/ : toggle_bookmark : Add or remove a bookmark
-- /meal/category/<category>/ : filterCalegory : Recipes in a category
-- /meal/recipe/<meal_id>/ : mealDetails : Recipe detail page
-
-## Data Models
-
-### User
-
-Custom user model with session-based authentication.
-
-- username: CharField(150), unique
-- email: EmailField, unique
-- password_hash: CharField(128), salted SHA-256
-- password_salt: CharField(32), random per user
-- date_of_birth: DateField, nullable
-- created_at: DateTimeField, auto
-- is_active: BooleanField, default True
-
-Methods: set_password, check_password, is_birthday_today, age.
-
-### Bookmark
-
-- user: ForeignKey(User), cascade delete
-- meal_id: CharField(100), TheMealDB ID
-- meal_name: CharField(255)
-- meal_thumb: URLField, nullable
-- created_at: DateTimeField, auto
-
-Unique constraint: (user, meal_id).
+- / : home
+- /search/ : search
+- /about/ : about
+- /contact/ : contact
+- /christmas/ : christmas
+- /diwali/ : diwali
+- /birthday/ : birthday
+- /login/ : login
+- /register/ : register
+- /logout/ : logout_view
+- /account/ : account
+- /account/dob/ : save_dob
+- /account/delete/ : delete_account
+- /bookmarks/ : bookmark_list
+- /bookmark/toggle/ : toggle_bookmark
+- /meal/category/<category>/ : filterCalegory
+- /meal/recipe/<meal_id>/ : mealDetails
 
 ## Authentication
 
@@ -215,102 +126,47 @@ This project does not use django.contrib.auth. Instead:
 
 - Passwords are hashed with salted SHA-256 (Meal/models.py)
 - Sessions store the user ID under request.session['user_id']
-- Meal/auth.py provides:
-  - login_user(request, user)
-  - logout_user(request)
-  - get_current_user(request)
-  - login_required decorator
+- Meal/auth.py provides login_user, logout_user, get_current_user, and the login_required decorator
 
-Note on hashing: Salted SHA-256 is used for simplicity. For production deployments handling sensitive data, swap to bcrypt or argon2 by replacing User._hash and the set_password / check_password implementations.
+For production deployments handling sensitive data, swap to bcrypt or argon2 by replacing User._hash and the set_password / check_password implementations.
 
 ## Deployment on PythonAnywhere
 
-### 1. Upload the code
+See the full deployment section in this file's history or the project wiki.
 
-From your local machine, zip the project (excluding the virtualenv and DB):
-
-    zip -r MealBox.zip MealBox -x "*/__pycache__/*" "*/venv/*" "*/staticfiles/*" "*.sqlite3*"
-
-Upload MealBox.zip via the Files tab on PythonAnywhere and extract:
-
-    cd ~
-    unzip MealBox.zip
-
-Alternatively, push to GitHub and git clone from the PythonAnywhere console.
-
-### 2. Create a virtualenv
+Basic steps:
 
     mkvirtualenv --python=/usr/bin/python3.10 mealbox-venv
     pip install -r ~/MealBox/requirements.txt
-
-### 3. Migrate and collect static files
-
     cd ~/MealBox
     python manage.py migrate
     python manage.py collectstatic --noinput
 
-### 4. Configure the Web app
-
-Go to the Web tab and click Add a new web app, then Manual configuration, then Python 3.10.
-
-Set:
+Then set up a Web app in the PythonAnywhere dashboard:
 
 - Source code: /home/xenonstudio/MealBox
 - Working directory: /home/xenonstudio/MealBox
 - Virtualenv: /home/xenonstudio/.virtualenvs/mealbox-venv
+- Static files: /static/ -> /home/xenonstudio/MealBox/staticfiles/
 
-### 5. Edit the WSGI configuration file
+## Release Notes for v2.0
 
-Replace its contents with:
+Full visual and architectural rewrite of the V1 recipe browser.
 
-    import os
-    import sys
-
-    path = '/home/xenonstudio/MealBox'
-    if path not in sys.path:
-        sys.path.insert(0, path)
-
-    os.environ['DJANGO_SETTINGS_MODULE'] = 'MealBox.settings'
-    os.environ['DJANGO_SECRET_KEY'] = 'REPLACE-WITH-A-REAL-SECRET-KEY'
-
-    from django.core.wsgi import get_wsgi_application
-    application = get_wsgi_application()
-
-### 6. Static files mapping
-
-In the Static files section of the Web tab add:
-
-- URL: /static/
-- Directory: /home/xenonstudio/MealBox/staticfiles/
-
-### 7. Reload
-
-Click the green Reload button. Visit:
-
-    https://xenonstudio.pythonanywhere.com
-
-## Troubleshooting
-
-- DisallowedHost: add the domain to ALLOWED_HOSTS in settings.py
-- ModuleNotFoundError: whitenoise: pip install whitenoise inside the venv
-- CSS or JS missing on live site: point /static/ at staticfiles/, not Meal/static/
-- 500 error with no visible cause: temporarily set DEBUG=True in settings.py, reload, read the traceback, then revert
-- no such table errors: run python manage.py migrate
-- Skeleton images never fade in: hard refresh and check the browser console
-
-Check the Error log link on the Web tab for PythonAnywhere-specific issues.
-
-## Release Notes for v1.0
-
-First public release.
-
-- Full recipe browsing, search, and bookmark system
-- Custom session-based authentication (no Django auth)
+- Dark neon iOS-style UI
+- Custom session-based authentication layer (no Django auth)
+- Removed Django admin
+- Dedicated search page with localStorage history
 - Seasonal collections: Christmas, Diwali, Birthday
-- Account management with optional date of birth and permanent deletion
-- Dark neon iOS-style UI with skeleton preloading and progress bar
+- Account page with profile, stats, and permanent delete
+- Optional date of birth with automatic birthday greeting
+- Bottom tab bar navigation
+- Sidebar with grouped sections and next-festival hint
+- YouTube-style skeleton preloading
+- Top progress bar on navigation
+- Full-screen overlay spinner on form submit
+- Contact form with validation
 - Whitenoise static file serving
-- Deployed on PythonAnywhere at https://xenonstudio.pythonanywhere.com
 
 ## License
 
