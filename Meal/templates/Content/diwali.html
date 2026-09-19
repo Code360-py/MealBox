@@ -1,0 +1,56 @@
+{% extends 'include/base.html' %}
+{% block title %}Diwali Specials | MealBox{% endblock %}
+
+{% block content %}
+
+  <div class="mb-diwali-hero">
+    <h2>🪔 Diwali Specials</h2>
+    <p>
+      {% if in_season %}
+        Celebrate the festival of lights with rich, festive dishes.
+      {% else %}
+        Festive Indian recipes, any time of year.
+      {% endif %}
+    </p>
+    {% if not current_user %}
+      <a href="{% url 'register' %}" class="mb-diwali-btn">
+        <i class="fa-solid fa-user-plus"></i> Join MealBox
+      </a>
+    {% else %}
+      <a href="{% url 'home' %}" class="mb-diwali-btn">
+        <i class="fa-solid fa-utensils"></i> Browse All Recipes
+      </a>
+    {% endif %}
+  </div>
+
+  {% if recipes %}
+    <div class="row g-3">
+      {% for meal in recipes %}
+        <div class="col-6 col-md-4 col-lg-3 d-flex align-items-stretch">
+          <div class="card shadow-sm hover-lift text-center w-100 position-relative">
+            <span class="mb-diwali-badge">🪔 DIWALI</span>
+            <span class="mb-skel ratio-4x3">
+              <img src="{{ meal.strMealThumb }}" loading="lazy" alt="{{ meal.strMeal }}">
+            </span>
+            <div class="card-body d-flex flex-column">
+              <h6 class="card-title flex-grow-1">{{ meal.strMeal }}</h6>
+              <a href="{% url 'recipe' meal.idMeal %}"
+                 class="btn btn-outline-danger btn-sm mt-2">
+                <i class="fa-solid fa-eye me-1"></i> View
+              </a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="mb-empty">
+      <i class="fa-solid fa-fire"></i>
+      <p>Couldn't fetch Diwali recipes right now. Try again in a moment.</p>
+      <a href="{% url 'diwali' %}" class="btn btn-outline-danger mt-2">
+        <i class="fa-solid fa-rotate"></i> Retry
+      </a>
+    </div>
+  {% endif %}
+
+{% endblock %}

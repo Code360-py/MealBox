@@ -1,0 +1,59 @@
+<header class="mb-topbar">
+  <div class="mb-container">
+
+    <button class="mb-icon-btn"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#mbSidebar"
+            aria-controls="mbSidebar"
+            aria-label="Open menu">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <a href="{% url 'home' %}" class="mb-brand">
+      <i class="fa-solid fa-utensils"></i>
+      Meal<span class="accent-1">Box</span>
+    </a>
+
+    {% if current_user %}
+      <div class="dropdown">
+        <button class="mb-icon-btn" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-label="Account menu">
+          <i class="fa-solid fa-circle-user"></i>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end mb-dropdown">
+          <li class="mb-dropdown-header">
+            <div class="mb-dropdown-name">{{ current_user.username }}</div>
+            <div class="mb-dropdown-sub">{{ current_user.email }}</div>
+          </li>
+          <li><hr class="dropdown-divider"></li>
+          <li>
+            <a class="dropdown-item" href="{% url 'account' %}">
+              <i class="fa-solid fa-circle-user me-2"></i>My Account
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="{% url 'bookmarks' %}">
+              <i class="fa-solid fa-bookmark me-2"></i>My Bookmarks
+            </a>
+          </li>
+          <li><hr class="dropdown-divider"></li>
+          <li>
+            <a class="dropdown-item text-danger" href="{% url 'logout' %}">
+              <i class="fa-solid fa-right-from-bracket me-2"></i>Logout
+            </a>
+          </li>
+        </ul>
+      </div>
+    {% else %}
+      <a href="{% url 'login' %}"
+         class="mb-icon-btn"
+         aria-label="Login"
+         title="Login">
+        <i class="fa-regular fa-circle-user"></i>
+      </a>
+    {% endif %}
+
+  </div>
+</header>

@@ -1,0 +1,65 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand text-primary" href="{% url 'home' %}">
+      <i class="fa-solid fa-utensils"></i> Meal<span class="text-danger">Box</span>
+    </a>
+    <button class="navbar-toggler" type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasContent"
+            aria-controls="offcanvasContent"
+            aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasContent" data-bs-theme="dark">
+      <div class="offcanvas-header">
+        <a style="text-decoration: none;" class="offcanvas-title text-warning" href="{% url 'home' %}">
+          <i class="fa-solid fa-utensils"></i> Meal<span class="text-primary">Box</span>
+        </a>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+      </div>
+
+      <div class="offcanvas-body">
+        <div class="navbar-nav">
+          <a class="nav-link" href="{% url 'home' %}"><i class="fa fa-home"></i> Recipe Index</a>
+          <a class="nav-link" href="{% url 'christmas' %}"><i class="fa fa-snowflake"></i> Christmas</a>
+          <a class="nav-link" href="{% url 'course' %}"><i class="fa fa-book"></i> Course</a>
+          <a class="nav-link" href="{% url 'methods' %}"><i class="fa fa-flask"></i> Methods</a>
+          <a class="nav-link" href="{% url 'about' %}"><i class="fa fa-info-circle"></i> About</a>
+          <a class="nav-link" href="{% url 'contact' %}"><i class="fa fa-address-book"></i> Contact</a>
+          <a class="nav-link" href="{% url 'support' %}"><i class="fa fa-headset"></i> 24/7 Support</a>
+        </div>
+
+        <div class="my-5 d-flex justify-content-around p-3 fs-1">
+          <a class="text-primary" href="{% url 'home' %}"><i class="fa-brands fa-instagram"></i></a>
+          <a class="text-info" href="{% url 'home' %}"><i class="fa-brands fa-telegram"></i></a>
+          <a class="text-success" href="{% url 'home' %}"><i class="fa-brands fa-whatsapp"></i></a>
+          <a href="{% url 'home' %}"><i class="fa-brands fa-twitter"></i></a>
+        </div>
+
+        <p class="text-center">Powered by
+          <a style="text-decoration: none;" class="text-danger" href="#">TheMealDB</a>
+          <i class="fa-solid fa-book-atlas"></i>
+        </p>
+      </div>
+
+      <div class="offcanvas-footer p-4 d-flex justify-content-between">
+        {% if current_user %}
+          <a class="btn btn-outline-light" href="{% url 'bookmarks' %}">
+            <i class="fa-solid fa-bookmark"></i> Bookmarks
+          </a>
+          <a href="{% url 'logout' %}" class="btn btn-outline-danger">
+            <i class="fa-solid fa-right-from-bracket"></i> Logout
+          </a>
+        {% else %}
+          <a href="{% url 'register' %}" class="btn btn-primary">
+            <i class="fa-solid fa-user-plus"></i> Get Started
+          </a>
+          <a href="{% url 'login' %}" class="btn btn-outline-light">
+            <i class="fa-solid fa-right-to-bracket"></i> Login
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</nav>

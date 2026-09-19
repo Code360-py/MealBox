@@ -1,0 +1,73 @@
+{% extends 'include/base.html' %}
+{% block title %}Register | MealBox{% endblock %}
+
+{% block content %}
+
+  <div class="card p-4 shadow mx-auto" style="max-width:460px;">
+
+    <div class="text-center mb-4">
+      <h3 class="fw-bold mb-1">
+        <i class="fa-solid fa-user-plus" style="color:var(--mb-cyan)"></i>
+        Create Account
+      </h3>
+      <p class="text-muted small mb-0">Join MealBox</p>
+    </div>
+
+    {% if error %}
+      <div class="alert alert-danger text-center">{{ error }}</div>
+    {% endif %}
+
+    <form method="POST">
+      {% csrf_token %}
+
+      <div class="mb-3">
+        <label class="form-label">Username</label>
+        <input type="text" name="username" class="form-control"
+               value="{{ username|default:'' }}"
+               placeholder="Choose a username" required autofocus>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input type="email" name="email" class="form-control"
+               value="{{ email|default:'' }}"
+               placeholder="you@example.com" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">
+          Date of Birth
+          <span class="small" style="color:var(--mb-muted)">(optional)</span>
+        </label>
+        <input type="date" name="date_of_birth" class="form-control"
+               value="{{ date_of_birth|default:'' }}">
+        <div class="small mt-1" style="color:var(--mb-muted)">
+          We'll wish you a happy birthday on your special day.
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Password</label>
+        <input type="password" name="password" class="form-control"
+               placeholder="Min 6 characters" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Confirm Password</label>
+        <input type="password" name="password2" class="form-control"
+               placeholder="Repeat password" required>
+      </div>
+
+      <button type="submit" class="btn btn-warning w-100 my-2">
+        <i class="fa-solid fa-user-plus me-1"></i> Register
+      </button>
+    </form>
+
+    <p class="text-center mt-3 mb-0" style="font-size:.85rem;">
+      Already have an account?
+      <a href="{% url 'login' %}" class="fw-semibold">Login</a>
+    </p>
+
+  </div>
+
+{% endblock %}

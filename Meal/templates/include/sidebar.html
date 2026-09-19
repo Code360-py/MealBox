@@ -1,0 +1,117 @@
+<aside class="offcanvas offcanvas-start mb-sidebar"
+       tabindex="-1"
+       id="mbSidebar"
+       aria-labelledby="mbSidebarLabel">
+
+  <div class="offcanvas-header">
+    <a id="mbSidebarLabel" href="{% url 'home' %}" class="mb-sidebar-brand">
+      <i class="fa-solid fa-utensils"></i>
+      Meal<span class="accent-1">Box</span>
+    </a>
+    <button type="button"
+            class="btn-close btn-close-white"
+            data-bs-dismiss="offcanvas"
+            aria-label="Close"></button>
+  </div>
+
+  <div class="offcanvas-body d-flex flex-column">
+
+    <!-- ───── Discover ───── -->
+    <div class="mb-sidebar-section">
+      <span class="mb-sidebar-heading">Discover</span>
+
+      <nav class="nav flex-column gap-1">
+        <a class="nav-link" href="{% url 'home' %}">
+          <i class="fa-solid fa-house"></i> Home
+        </a>
+        <a class="nav-link" href="{% url 'search' %}">
+          <i class="fa-solid fa-magnifying-glass"></i> Search
+        </a>
+        <a class="nav-link" href="{% url 'bookmarks' %}">
+          <i class="fa-solid fa-bookmark"></i> My Bookmarks
+        </a>
+      </nav>
+    </div>
+
+    <!-- ───── Occasions ───── -->
+    <div class="mb-sidebar-section mt-3">
+      <span class="mb-sidebar-heading">
+        Occasions
+        {% if next_festival %}
+          <span class="mb-sidebar-hint">
+            <i class="fa-solid fa-circle" style="font-size:.4rem"></i>
+            {{ next_festival.label }} {{ next_festival.when }}
+          </span>
+        {% endif %}
+      </span>
+
+      <nav class="nav flex-column gap-1">
+        <a class="nav-link" href="{% url 'christmas' %}">
+          <i class="fa-solid fa-snowflake" style="color:var(--mb-coral)"></i>
+          <span class="flex-grow-1">Christmas</span>
+          {% if next_festival and next_festival.key == 'christmas' %}
+            <span class="mb-badge-soon">Soon</span>
+          {% endif %}
+        </a>
+        <a class="nav-link" href="{% url 'diwali' %}">
+          <i class="fa-solid fa-fire" style="color:#ffb43c"></i>
+          <span class="flex-grow-1">Diwali</span>
+          {% if next_festival and next_festival.key == 'diwali' %}
+            <span class="mb-badge-soon">Soon</span>
+          {% endif %}
+        </a>
+        <a class="nav-link" href="{% url 'birthday' %}">
+          <i class="fa-solid fa-cake-candles" style="color:var(--mb-purple)"></i>
+          <span class="flex-grow-1">Birthday</span>
+        </a>
+      </nav>
+    </div>
+
+    <!-- ───── Info ───── -->
+    <div class="mb-sidebar-section mt-3">
+      <span class="mb-sidebar-heading">Info</span>
+
+      <nav class="nav flex-column gap-1">
+        <a class="nav-link" href="{% url 'about' %}">
+          <i class="fa-solid fa-circle-info"></i> About
+        </a>
+        <a class="nav-link" href="{% url 'contact' %}">
+          <i class="fa-solid fa-address-book"></i> Contact
+        </a>
+      </nav>
+    </div>
+
+    <!-- ───── Social ───── -->
+    <div class="mt-4 mb-sidebar-social d-flex justify-content-around fs-4">
+      <a class="text-primary" href="#"><i class="fa-brands fa-instagram"></i></a>
+      <a class="text-info" href="#"><i class="fa-brands fa-telegram"></i></a>
+      <a class="text-success" href="#"><i class="fa-brands fa-whatsapp"></i></a>
+      <a class="text-light" href="#"><i class="fa-brands fa-x-twitter"></i></a>
+    </div>
+
+    <div class="mt-auto pt-4 text-center small" style="color:var(--mb-muted)">
+      Powered by
+      <a class="text-decoration-none" style="color:var(--mb-cyan);" href="#">TheMealDB</a>
+    </div>
+
+  </div>
+
+  <div class="mb-sidebar-footer">
+    {% if current_user %}
+      <a href="{% url 'account' %}" class="btn btn-outline-light btn-sm">
+        <i class="fa-solid fa-circle-user"></i> Account
+      </a>
+      <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">
+        <i class="fa-solid fa-right-from-bracket"></i> Logout
+      </a>
+    {% else %}
+      <a href="{% url 'register' %}" class="btn btn-warning btn-sm">
+        <i class="fa-solid fa-user-plus"></i> Register
+      </a>
+      <a href="{% url 'login' %}" class="btn btn-outline-light btn-sm">
+        <i class="fa-solid fa-right-to-bracket"></i> Login
+      </a>
+    {% endif %}
+  </div>
+
+</aside>

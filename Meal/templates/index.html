@@ -1,0 +1,120 @@
+{% extends 'include/base.html' %}
+{% block title %}Home | MealBox{% endblock %}
+
+{% block content %}
+
+  {% if personal_birthday %}
+    <div class="card shadow-sm mb-3"
+         style="background:
+           radial-gradient(400px 200px at 50% 0%, rgba(168,85,247,.25), transparent 70%),
+           linear-gradient(135deg, rgba(168,85,247,.10), rgba(0,229,255,.10)),
+           var(--mb-surface);
+           border-color: rgba(168,85,247,.45);">
+      <div class="card-body text-center py-4">
+        <div style="font-size:2.5rem;">🎂</div>
+        <h4 class="fw-bold mb-1">Happy Birthday, {{ current_user.username }}!</h4>
+        <p class="small mb-0" style="color:var(--mb-muted)">
+          Hope your day is full of good food.
+        </p>
+        <a href="{% url 'birthday' %}" class="btn btn-warning mt-3">
+          <i class="fa-solid fa-cake-candles me-1"></i> Birthday Recipes
+        </a>
+      </div>
+    </div>
+  {% endif %}
+
+  {% if show_christmas %}
+    <div class="mb-xmas-hero">
+      <h2>🎄 Christmas Specials</h2>
+      <p>Warm up the season with our favourite holiday recipes.</p>
+      <a href="{% url 'christmas' %}" class="mb-xmas-btn">
+        <i class="fa-solid fa-snowflake"></i> Explore Christmas
+      </a>
+    </div>
+  {% endif %}
+
+  {% if show_diwali %}
+    <div class="mb-diwali-hero">
+      <h2>🪔 Diwali Specials</h2>
+      <p>Celebrate the festival of lights with rich, festive dishes.</p>
+      <a href="{% url 'diwali' %}" class="mb-diwali-btn">
+        <i class="fa-solid fa-fire"></i> Explore Diwali
+      </a>
+    </div>
+  {% endif %}
+
+  <div class="mb-hero">
+    <h2>Recipes</h2>
+    <p>Browse over 1200 family-friendly recipes. Tag us on social @MealBox.</p>
+  </div>
+
+  {% comment %}search moved to /search/{% endcomment %}<a href="{% url 'search' %}" class="btn btn-warning w-100 my-4 mb-search-cta"><i class="fa-solid fa-magnifying-glass me-2"></i>Search Recipes</a><form method="GET" class="my-4 mb-search" id="search" style="display:none;">
+    <div class="input-group">
+      <span class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></span>
+      <input type="text" name="q" value="{{ query }}" class="form-control"
+             placeholder="Search meals by name...">
+      <button class="btn btn-warning" type="submit">
+        <i class="fa-solid fa-arrow-right"></i>
+      </button>
+    </div>
+  </form>
+
+  {% if query %}
+    <h4 class="text-center my-4">Results for "{{ query }}"</h4>
+    <div class="row g-3">
+      {% for meal in meals %}
+        <div class="col-6 col-md-4 col-lg-3 d-flex align-items-stretch">
+          <div class="card shadow-sm hover-lift text-center w-100">
+            <span class="mb-skel ratio-4x3">
+              <img src="{{ meal.strMealThumb }}" loading="lazy" alt="{{ meal.strMeal }}">
+            </span>
+            <div class="card-body d-flex flex-column">
+              <h6 class="card-title flex-grow-1">{{ meal.strMeal }}</h6>
+              <a href="{% url 'recipe' meal.idMeal %}" class="btn btn-outline-dark btn-sm mt-2">
+                <i class="fa-solid fa-eye me-1"></i> View
+              </a>
+            </div>
+          </div>
+        </div>
+      {% empty %}
+        <div class="mb-empty">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <p>No meals matched "{{ query }}".</p>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <h5 class="fw-bold mt-4 mb-3">
+      <i class="fa-solid fa-layer-group me-1" style="color:var(--mb-cyan)"></i>
+      Browse Categories
+    </h5>
+    <div class="row g-3">
+      {% for category in categories %}
+        <div class="col-6 col-md-4 col-lg-3 d-flex align-items-stretch">
+          <div class="card shadow-sm hover-lift text-center w-100">
+            <span class="mb-skel ratio-4x3">
+              <img src="{{ category.strCategoryThumb }}" loading="lazy" alt="{{ category.strCategory }}">
+            </span>
+            <div class="card-body d-flex flex-column">
+              <h6 class="card-title flex-grow-1">{{ category.strCategory }}</h6>
+              <a href="{% url 'category' category.strCategory %}" class="btn btn-outline-dark btn-sm mt-2">
+                <i class="fa-solid fa-book me-1"></i> Browse
+              </a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    {% if show_birthday %}
+      <div class="mb-birthday-hero mt-4">
+        <h2>🎂 Birthday Specials</h2>
+        <p>Cakes, chocolates, and celebration-worthy desserts.</p>
+        <a href="{% url 'birthday' %}" class="mb-birthday-btn">
+          <i class="fa-solid fa-cake-candles"></i> Explore Birthday
+        </a>
+      </div>
+    {% endif %}
+  {% endif %}
+
+{% endblock %}

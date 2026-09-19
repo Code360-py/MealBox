@@ -1,0 +1,50 @@
+{% extends 'include/base.html' %}
+{% block title %}My Bookmarks | MealBox{% endblock %}
+
+{% block content %}
+
+  <div class="mb-hero">
+    <h2><i class="fa-solid fa-bookmark" style="color:var(--mb-cyan)"></i> Saved Meals</h2>
+    <p>Your personal collection</p>
+  </div>
+
+  {% if bookmarks %}
+    <div class="row g-3">
+      {% for bookmark in bookmarks %}
+        <div class="col-6 col-md-4 d-flex align-items-stretch">
+          <div class="card shadow-sm hover-lift w-100">
+            {% if bookmark.meal_thumb %}
+              <span class="mb-skel ratio-4x3">
+                <img src="{{ bookmark.meal_thumb }}" loading="lazy"
+                     alt="{{ bookmark.meal_name }}">
+              </span>
+            {% endif %}
+            <div class="card-body d-flex flex-column text-center">
+              <h6 class="card-title flex-grow-1">{{ bookmark.meal_name }}</h6>
+              <a href="{% url 'recipe' bookmark.meal_id %}" class="btn btn-outline-dark btn-sm mb-2">
+                <i class="fa-solid fa-eye"></i> View
+              </a>
+              <form method="POST" action="{% url 'toggle_bookmark' %}" class="m-0" data-no-overlay>
+                {% csrf_token %}
+                <input type="hidden" name="meal_id" value="{{ bookmark.meal_id }}">
+                <input type="hidden" name="meal_name" value="{{ bookmark.meal_name }}">
+                <button class="btn btn-outline-danger btn-sm w-100">
+                  <i class="fa-solid fa-trash"></i> Remove
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="mb-empty">
+      <i class="fa-regular fa-bookmark"></i>
+      <p>No bookmarks yet. Start saving your favorite meals.</p>
+      <a href="{% url 'home' %}" class="btn btn-warning mt-2">
+        <i class="fa-solid fa-book"></i> Browse Recipes
+      </a>
+    </div>
+  {% endif %}
+
+{% endblock %}

@@ -1,0 +1,36 @@
+{% load static %}
+<nav class="mb-bottomtabs" aria-label="Primary navigation">
+
+  <a class="mb-tab {% if active_tab == 'home' %}active{% endif %}"
+     href="{% url 'home' %}" title="Home">
+    <i class="fa-solid fa-house"></i>
+    <span>Home</span>
+  </a>
+
+  <a class="mb-tab {% if active_tab == 'search' %}active{% endif %}"
+     href="{% url 'search' %}" title="Search">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span>Search</span>
+  </a>
+
+  <a class="mb-tab {% if active_tab == 'bookmarks' %}active{% endif %}"
+     href="{% url 'bookmarks' %}" title="Saved">
+    <i class="fa-solid fa-bookmark"></i>
+    <span>Saved</span>
+  </a>
+
+  {% if current_user %}
+    <a class="mb-tab {% if active_tab == 'account' %}active{% endif %}"
+       href="{% url 'account' %}" title="Account">
+      <i class="fa-solid fa-circle-user"></i>
+      <span>Account</span>
+    </a>
+  {% else %}
+    <a class="mb-tab {% if active_tab == 'account' %}active{% endif %}"
+       href="{% url 'login' %}" title="Login">
+      <i class="fa-regular fa-circle-user"></i>
+      <span>Login</span>
+    </a>
+  {% endif %}
+
+</nav>

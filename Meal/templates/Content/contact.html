@@ -1,0 +1,113 @@
+{% extends 'include/base.html' %}
+{% block title %}Contact | MealBox{% endblock %}
+
+{% block content %}
+
+  <div class="mb-hero">
+    <h2><i class="fa-solid fa-address-book" style="color:var(--mb-cyan)"></i> Contact Us</h2>
+    <p>Questions, feedback, or just want to say hi?</p>
+  </div>
+
+  <div class="row g-3">
+
+    <!-- Info column -->
+    <div class="col-12 col-md-5">
+      <div class="card shadow-sm h-100">
+        <div class="card-body p-4">
+          <h5 class="fw-bold mb-3">
+            <i class="fa-solid fa-circle-info me-2" style="color:var(--mb-cyan)"></i>Details
+          </h5>
+
+          <div class="d-flex gap-3 mb-3">
+            <i class="fa-solid fa-envelope fs-5" style="color:var(--mb-cyan);width:22px;"></i>
+            <div>
+              <div class="fw-bold small" style="color:var(--mb-muted)">Email</div>
+              <div style="color:var(--mb-text)">support@mealbox.example</div>
+            </div>
+          </div>
+
+          <div class="d-flex gap-3 mb-3">
+            <i class="fa-solid fa-clock fs-5" style="color:var(--mb-purple);width:22px;"></i>
+            <div>
+              <div class="fw-bold small" style="color:var(--mb-muted)">Response Time</div>
+              <div style="color:var(--mb-text)">Within 24 hours</div>
+            </div>
+          </div>
+
+          <div class="d-flex gap-3">
+            <i class="fa-solid fa-globe fs-5" style="color:var(--mb-pink);width:22px;"></i>
+            <div>
+              <div class="fw-bold small" style="color:var(--mb-muted)">Recipes powered by</div>
+              <div style="color:var(--mb-text)">TheMealDB</div>
+            </div>
+          </div>
+
+          <hr style="border-color:var(--mb-border);">
+
+          <div class="d-flex justify-content-around fs-4">
+            <a class="text-primary" href="#"><i class="fa-brands fa-instagram"></i></a>
+            <a class="text-info" href="#"><i class="fa-brands fa-telegram"></i></a>
+            <a class="text-success" href="#"><i class="fa-brands fa-whatsapp"></i></a>
+            <a class="text-light" href="#"><i class="fa-brands fa-x-twitter"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form column -->
+    <div class="col-12 col-md-7">
+      <div class="card shadow-sm h-100">
+        <div class="card-body p-4">
+
+          <h5 class="fw-bold mb-3">
+            <i class="fa-solid fa-paper-plane me-2" style="color:var(--mb-mint)"></i>Send a Message
+          </h5>
+
+          {% if success %}
+            <div class="alert alert-success text-center"
+                 style="border-color:rgba(34,255,136,.4);background:rgba(34,255,136,.08);color:#b8ffd4;">
+              <i class="fa-solid fa-circle-check me-1"></i>
+              Thanks — your message was received. We'll get back to you soon.
+            </div>
+          {% endif %}
+
+          {% if error %}
+            <div class="alert alert-danger text-center">{{ error }}</div>
+          {% endif %}
+
+          <form method="POST" data-no-overlay>
+            {% csrf_token %}
+
+            <div class="mb-3">
+              <label class="form-label">Name</label>
+              <input type="text" name="name" class="form-control"
+                     value="{{ request.POST.name|default:'' }}"
+                     placeholder="Your name" required>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Email</label>
+              <input type="email" name="email" class="form-control"
+                     value="{{ request.POST.email|default:'' }}"
+                     placeholder="you@example.com" required>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Message</label>
+              <textarea name="message" rows="5" class="form-control"
+                        placeholder="How can we help?"
+                        required>{{ request.POST.message|default:'' }}</textarea>
+            </div>
+
+            <button type="submit" class="btn btn-warning w-100">
+              <i class="fa-solid fa-paper-plane me-1"></i> Send
+            </button>
+          </form>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+{% endblock %}

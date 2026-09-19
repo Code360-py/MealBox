@@ -1,0 +1,273 @@
+{% extends 'include/base.html' %}
+{% block title %}About | MealBox{% endblock %}
+
+{% block content %}
+
+  <!-- Hero -->
+  <div class="mb-hero">
+    <h2><i class="fa-solid fa-circle-info" style="color:var(--mb-cyan)"></i> About MealBox</h2>
+    <p>Recipes, cooking methods, and food discovery — made simple.</p>
+  </div>
+
+  <!-- Mission -->
+  <div class="card shadow-sm mb-3">
+    <div class="card-body p-4">
+      <div class="d-flex align-items-center gap-3 mb-3">
+        <div style="width:46px;height:46px;border-radius:14px;
+                    background:linear-gradient(135deg,var(--mb-cyan),var(--mb-purple));
+                    display:flex;align-items:center;justify-content:center;
+                    color:#0a0a0f;font-size:1.2rem;
+                    box-shadow:0 0 20px rgba(0,229,255,.35);">
+          <i class="fa-solid fa-bullseye"></i>
+        </div>
+        <h5 class="fw-bold mb-0">Our Mission</h5>
+      </div>
+      <p class="mb-0" style="color:var(--mb-muted);line-height:1.7;">
+        MealBox is a lightweight recipe browser built on top of the public
+        <a href="https://www.themealdb.com" target="_blank" rel="noopener">TheMealDB</a> API.
+        The goal is simple: help you find a dish, see what it takes to make it,
+        and save the ones you love — without ads, popups, or clutter.
+      </p>
+    </div>
+  </div>
+
+  <!-- Features grid -->
+  <div class="card shadow-sm mb-3">
+    <div class="card-body p-4">
+      <div class="d-flex align-items-center gap-3 mb-4">
+        <div style="width:46px;height:46px;border-radius:14px;
+                    background:linear-gradient(135deg,var(--mb-purple),var(--mb-pink));
+                    display:flex;align-items:center;justify-content:center;
+                    color:#0a0a0f;font-size:1.2rem;
+                    box-shadow:0 0 20px rgba(168,85,247,.35);">
+          <i class="fa-solid fa-star"></i>
+        </div>
+        <h5 class="fw-bold mb-0">What You Can Do</h5>
+      </div>
+
+      <div class="row g-3">
+        <div class="col-12 col-md-6">
+          <div class="d-flex gap-3 p-3 h-100"
+               style="background:var(--mb-surface-2);border-radius:14px;border:1px solid var(--mb-border);">
+            <i class="fa-solid fa-magnifying-glass fs-4"
+               style="color:var(--mb-cyan);width:24px;text-align:center;"></i>
+            <div>
+              <div class="fw-bold">Search recipes</div>
+              <div class="small" style="color:var(--mb-muted)">
+                Look up dishes by name from a 1200+ catalog, with recent-search history saved locally.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <div class="d-flex gap-3 p-3 h-100"
+               style="background:var(--mb-surface-2);border-radius:14px;border:1px solid var(--mb-border);">
+            <i class="fa-solid fa-layer-group fs-4"
+               style="color:var(--mb-purple);width:24px;text-align:center;"></i>
+            <div>
+              <div class="fw-bold">Browse by category</div>
+              <div class="small" style="color:var(--mb-muted)">
+                Beef, Chicken, Seafood, Dessert, Vegetarian, and more — filter with one tap.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <div class="d-flex gap-3 p-3 h-100"
+               style="background:var(--mb-surface-2);border-radius:14px;border:1px solid var(--mb-border);">
+            <i class="fa-solid fa-bookmark fs-4"
+               style="color:var(--mb-pink);width:24px;text-align:center;"></i>
+            <div>
+              <div class="fw-bold">Save favorites</div>
+              <div class="small" style="color:var(--mb-muted)">
+                Bookmark any recipe to your personal collection. Available on any device you log in from.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <div class="d-flex gap-3 p-3 h-100"
+               style="background:var(--mb-surface-2);border-radius:14px;border:1px solid var(--mb-border);">
+            <i class="fa-solid fa-kitchen-set fs-4"
+               style="color:var(--mb-mint);width:24px;text-align:center;"></i>
+            <div>
+              <div class="fw-bold">Full ingredient lists</div>
+              <div class="small" style="color:var(--mb-muted)">
+                Step-by-step instructions with exact measurements for every dish.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Occasions -->
+  <div class="card shadow-sm mb-3">
+    <div class="card-body p-4">
+      <div class="d-flex align-items-center gap-3 mb-3">
+        <div style="width:46px;height:46px;border-radius:14px;
+                    background:linear-gradient(135deg,var(--mb-coral),#ffb43c);
+                    display:flex;align-items:center;justify-content:center;
+                    color:#0a0a0f;font-size:1.2rem;
+                    box-shadow:0 0 20px rgba(255,84,112,.35);">
+          <i class="fa-solid fa-gift"></i>
+        </div>
+        <h5 class="fw-bold mb-0">Seasonal Collections</h5>
+      </div>
+      <p class="small mb-3" style="color:var(--mb-muted)">
+        Handpicked recipe sets for the occasions that matter.
+      </p>
+
+      <div class="row g-2">
+        <div class="col-4">
+          <a href="{% url 'christmas' %}" class="d-block p-3 text-center text-decoration-none"
+             style="background:var(--mb-surface-2);border-radius:14px;border:1px solid rgba(255,84,112,.35);">
+            <i class="fa-solid fa-snowflake fs-4 d-block mb-1" style="color:var(--mb-coral)"></i>
+            <div class="small fw-bold" style="color:var(--mb-text)">Christmas</div>
+          </a>
+        </div>
+        <div class="col-4">
+          <a href="{% url 'diwali' %}" class="d-block p-3 text-center text-decoration-none"
+             style="background:var(--mb-surface-2);border-radius:14px;border:1px solid rgba(255,180,60,.35);">
+            <i class="fa-solid fa-fire fs-4 d-block mb-1" style="color:#ffb43c"></i>
+            <div class="small fw-bold" style="color:var(--mb-text)">Diwali</div>
+          </a>
+        </div>
+        <div class="col-4">
+          <a href="{% url 'birthday' %}" class="d-block p-3 text-center text-decoration-none"
+             style="background:var(--mb-surface-2);border-radius:14px;border:1px solid rgba(168,85,247,.35);">
+            <i class="fa-solid fa-cake-candles fs-4 d-block mb-1" style="color:var(--mb-purple)"></i>
+            <div class="small fw-bold" style="color:var(--mb-text)">Birthday</div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Data source -->
+  <div class="card shadow-sm mb-3">
+    <div class="card-body p-4">
+      <div class="d-flex align-items-center gap-3 mb-3">
+        <div style="width:46px;height:46px;border-radius:14px;
+                    background:linear-gradient(135deg,var(--mb-mint),var(--mb-cyan));
+                    display:flex;align-items:center;justify-content:center;
+                    color:#0a0a0f;font-size:1.2rem;
+                    box-shadow:0 0 20px rgba(34,255,136,.3);">
+          <i class="fa-solid fa-database"></i>
+        </div>
+        <h5 class="fw-bold mb-0">Data Source</h5>
+      </div>
+      <p class="small mb-3" style="color:var(--mb-muted);line-height:1.7;">
+        All recipes, images, categories, and instructions come from
+        <strong style="color:var(--mb-text)">TheMealDB</strong> — a free, open
+        recipe database maintained by the community. MealBox does not store or
+        claim ownership of this content.
+      </p>
+      <a href="https://www.themealdb.com" target="_blank" rel="noopener"
+         class="btn btn-outline-dark btn-sm">
+        <i class="fa-solid fa-arrow-up-right-from-square me-1"></i> themealdb.com
+      </a>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="card shadow-sm mb-3">
+    <div class="card-body p-4">
+      <div class="d-flex align-items-center gap-3 mb-3">
+        <div style="width:46px;height:46px;border-radius:14px;
+                    background:linear-gradient(135deg,var(--mb-cyan),var(--mb-purple));
+                    display:flex;align-items:center;justify-content:center;
+                    color:#0a0a0f;font-size:1.2rem;">
+          <i class="fa-solid fa-circle-question"></i>
+        </div>
+        <h5 class="fw-bold mb-0">Common Questions</h5>
+      </div>
+
+      <div class="accordion" id="aboutFaq">
+
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#faq1">
+              Is MealBox free to use?
+            </button>
+          </h2>
+          <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#aboutFaq">
+            <div class="accordion-body">
+              Yes. No ads, no paywalls, no signup required to browse.
+              You only need an account to bookmark recipes.
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#faq2">
+              Do I need an account?
+            </button>
+          </h2>
+          <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#aboutFaq">
+            <div class="accordion-body">
+              You can search and browse all recipes without an account.
+              Create one to save recipes to your personal bookmark collection.
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#faq3">
+              Where do recipes come from?
+            </button>
+          </h2>
+          <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#aboutFaq">
+            <div class="accordion-body">
+              Every recipe, image, and instruction is served directly from
+              TheMealDB's public API. MealBox is a viewer on top of it.
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#faq4">
+              Can I delete my account?
+            </button>
+          </h2>
+          <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#aboutFaq">
+            <div class="accordion-body">
+              Yes. Go to your <a href="{% url 'account' %}">account page</a>
+              and use the Danger Zone at the bottom. Deletion is permanent and
+              removes all your bookmarks.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-4">
+    <a href="{% url 'home' %}" class="btn btn-warning">
+      <i class="fa-solid fa-utensils me-1"></i> Browse Recipes
+    </a>
+    {% if not current_user %}
+      <a href="{% url 'register' %}" class="btn btn-outline-dark">
+        <i class="fa-solid fa-user-plus me-1"></i> Create Account
+      </a>
+    {% else %}
+      <a href="{% url 'account' %}" class="btn btn-outline-dark">
+        <i class="fa-solid fa-circle-user me-1"></i> My Account
+      </a>
+    {% endif %}
+  </div>
+
+{% endblock %}
