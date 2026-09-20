@@ -1164,3 +1164,254 @@ h5.fw-bold, h4.fw-bold, h3.fw-bold { letter-spacing: .2px; }
   color: var(--mb-muted);
   word-break: break-all;
 }
+
+/* =============================================================
+   Smart Assistant — floating button + bottom sheet
+   ============================================================= */
+
+.mb-fab {
+  position: fixed;
+  right: 16px;
+  bottom: calc(var(--mb-bottom-h) + env(safe-area-inset-bottom) + 16px);
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: none;
+  color: #0a0a0f;
+  font-size: 1.3rem;
+  background: linear-gradient(135deg, var(--mb-cyan), var(--mb-purple));
+  box-shadow:
+    0 0 0 1px rgba(0,229,255,.35),
+    0 8px 24px rgba(0,0,0,.55),
+    0 0 26px rgba(0,229,255,.45);
+  z-index: 1040;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform .2s ease, box-shadow .2s ease, opacity .2s ease;
+}
+.mb-fab:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow:
+    0 0 0 1px rgba(0,229,255,.55),
+    0 12px 30px rgba(0,0,0,.65),
+    0 0 34px rgba(0,229,255,.6);
+}
+.mb-fab:active { transform: scale(.94); }
+.mb-fab.is-hidden { opacity: 0; pointer-events: none; transform: scale(.6); }
+
+.mb-fab::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,229,255,.25);
+  animation: mbFabPulse 2.2s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes mbFabPulse {
+  0%,100% { transform: scale(1);    opacity: .35; }
+  50%     { transform: scale(1.15); opacity: .05; }
+}
+
+.mb-sheet-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(6,6,10,.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 1045;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .22s ease;
+}
+.mb-sheet-backdrop.is-open { opacity: 1; pointer-events: auto; }
+
+.mb-sheet {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 1050;
+  background: rgba(18,18,26,.98);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top-left-radius: 22px;
+  border-top-right-radius: 22px;
+  border-top: 1px solid var(--mb-border-strong);
+  padding: 8px 18px calc(var(--mb-bottom-h) + 24px);
+  transform: translateY(110%);
+  transition: transform .28s cubic-bezier(.2,.8,.2,1);
+  max-height: 80dvh;
+  overflow-y: auto;
+  box-shadow: 0 -14px 40px rgba(0,0,0,.6), 0 0 30px rgba(0,229,255,.12);
+}
+.mb-sheet.is-open { transform: translateY(0); }
+
+.mb-sheet-handle {
+  width: 40px; height: 4px;
+  border-radius: 4px;
+  background: rgba(255,255,255,.15);
+  margin: 6px auto 14px;
+}
+
+.mb-sheet-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.mb-sheet-close {
+  background: transparent;
+  border: none;
+  color: var(--mb-muted);
+  font-size: 1.1rem;
+  width: 34px; height: 34px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all .15s ease;
+}
+.mb-sheet-close:hover {
+  color: var(--mb-cyan);
+  background: rgba(0,229,255,.08);
+}
+
+.mb-sheet-action {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  text-decoration: none;
+  color: var(--mb-text);
+  background: var(--mb-surface-2);
+  border: 1px solid var(--mb-border);
+  transition: all .18s ease;
+}
+.mb-sheet-action:hover {
+  color: var(--mb-text);
+  border-color: rgba(0,229,255,.45);
+  box-shadow: 0 0 22px rgba(0,229,255,.18);
+  transform: translateY(-1px);
+}
+.mb-sheet-icon {
+  width: 42px; height: 42px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0a0a0f;
+  font-size: 1.15rem;
+  flex-shrink: 0;
+}
+
+.mb-chip-soft {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: .78rem;
+  font-weight: 600;
+  color: var(--mb-text);
+  background: rgba(255,255,255,.04);
+  border: 1px solid var(--mb-border-strong);
+  text-decoration: none;
+  transition: all .18s ease;
+}
+.mb-chip-soft:hover {
+  color: var(--mb-cyan);
+  border-color: rgba(0,229,255,.5);
+  background: rgba(0,229,255,.06);
+  box-shadow: 0 0 16px rgba(0,229,255,.2);
+}
+
+/* =============================================================
+   Congratulations overlay
+   ============================================================= */
+.mb-congrats {
+  position: fixed;
+  inset: 0;
+  z-index: 2500;
+  background: rgba(6,6,10,.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .3s ease;
+}
+.mb-congrats.is-open { opacity: 1; pointer-events: auto; }
+
+.mb-congrats-card {
+  text-align: center;
+  padding: 32px 24px;
+  max-width: 360px;
+  transform: translateY(20px) scale(.96);
+  opacity: 0;
+  transition: transform .35s cubic-bezier(.2,.8,.2,1), opacity .35s ease;
+}
+.mb-congrats.is-open .mb-congrats-card {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+.mb-congrats-emoji {
+  font-size: 4.5rem;
+  line-height: 1;
+  margin-bottom: 18px;
+  display: block;
+  animation: mbEmojiBounce 1.2s ease-in-out infinite;
+}
+@keyframes mbEmojiBounce {
+  0%,100% { transform: translateY(0)    rotate(0); }
+  40%     { transform: translateY(-10px) rotate(-4deg); }
+  70%     { transform: translateY(-4px)  rotate(4deg); }
+}
+
+.mb-congrats-title {
+  font-weight: 800;
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+  background: linear-gradient(135deg, #ffffff, var(--mb-cyan));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.mb-congrats-text {
+  color: var(--mb-muted);
+  margin: 0 0 4px;
+  font-weight: 500;
+}
+
+/* Confetti */
+.mb-congrats-confetti {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.mb-confetti-piece {
+  position: absolute;
+  top: -20px;
+  width: 8px;
+  height: 14px;
+  opacity: .9;
+  border-radius: 2px;
+  animation: mbConfettiFall linear forwards;
+}
+@keyframes mbConfettiFall {
+  0%   { transform: translateY(-20px) rotate(0deg);   opacity: 1; }
+  100% { transform: translateY(110vh)  rotate(540deg); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mb-congrats-emoji,
+  .mb-fab::after,
+  .mb-confetti-piece {
+    animation: none !important;
+  }
+}

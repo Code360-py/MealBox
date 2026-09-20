@@ -134,6 +134,22 @@ def birthday_recipes(limit=24):
 
 
 # ----------------------------------------------------------------------
+# Congratulations flag helper
+# ----------------------------------------------------------------------
+def _pop_congrats_flag(request, user):
+    """Return a congrats trigger key for the home page, at most once per session."""
+    if not user:
+        return None
+
+    # Birthday: show once per session
+    if user.is_birthday_today() and not request.session.get('birthday_shown'):
+        request.session['birthday_shown'] = True
+        return 'birthday'
+
+    return None
+
+
+# ----------------------------------------------------------------------
 # Content pages
 # ----------------------------------------------------------------------
 def home(request):
@@ -154,6 +170,7 @@ def home(request):
         show_diwali=is_diwali_season(),
         show_birthday=is_birthday_season(),
         personal_birthday=(user.is_birthday_today() if user else False),
+        congrats_flag=_pop_congrats_flag(request, user),
         active_tab='home',
     ))
 
@@ -273,7 +290,7 @@ def register(request):
         user.save()
 
         login_user(request, user)
-        return redirect('home')
+        return redirect(f"/?welcome=1&u={user.username}")
 
     return render(request, 'Content/register.html', _ctx(request, active_tab='account'))
 
@@ -354,6 +371,11 @@ def toggle_bookmark(request):
         )
         if not created:
             bookmark.delete()
+            return redirect(request.META.get('HTTP_REFERER') or 'home')
+
+        # Was this the user's very first bookmark?
+        if Bookmark.objects.filter(user=user).count() == 1:
+            return redirect('/?first_save=1')
 
     return redirect(request.META.get('HTTP_REFERER') or 'home')
 
@@ -456,3 +478,19 @@ def search(request):
         meals=meals,
         active_tab='search',
     ))
+
+
+# ----------------------------------------------------------------------
+# Smart assistant: random recipe
+# ----------------------------------------------------------------------
+def random_recipe(request):
+    """Fetch a random meal from TheMealDB and redirect to its page."""
+    data = _get('random.php').get('meals') or []
+    if not data:
+        return redirect('home')
+
+    meal_id = data[0].get('idMeal')
+    if not meal_id:
+        return redirect('home')
+
+    return redirect('recipe', meal_id=meal_id)

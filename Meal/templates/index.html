@@ -3,6 +3,17 @@
 
 {% block content %}
 
+  {% if congrats_flag == 'birthday' %}
+    <script>
+      // Auto-trigger birthday overlay on page load
+      (function () {
+        const u = new URL(location.href);
+        u.searchParams.set('birthday', '1');
+        history.replaceState({}, '', u.pathname + '?' + u.searchParams.toString());
+      })();
+    </script>
+  {% endif %}
+
   {% if personal_birthday %}
     <div class="card shadow-sm mb-3"
          style="background:

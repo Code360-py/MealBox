@@ -1,0 +1,58 @@
+<!-- Smart Assistant: floating button + bottom sheet -->
+<button id="mbAssistantFab"
+        class="mb-fab"
+        type="button"
+        aria-label="Open smart assistant">
+  <i class="fa-solid fa-wand-magic-sparkles"></i>
+</button>
+
+<div id="mbAssistantBackdrop" class="mb-sheet-backdrop"></div>
+
+<div id="mbAssistantSheet"
+     class="mb-sheet"
+     role="dialog"
+     aria-modal="true"
+     aria-labelledby="mbAssistantTitle">
+
+  <div class="mb-sheet-handle"></div>
+
+  <div class="mb-sheet-head">
+    <h5 id="mbAssistantTitle" class="fw-bold mb-0">
+      <i class="fa-solid fa-wand-magic-sparkles me-2" style="color:var(--mb-cyan)"></i>
+      Smart Assistant
+    </h5>
+    <button type="button" class="mb-sheet-close" aria-label="Close">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </div>
+
+  <p class="small mb-3" style="color:var(--mb-muted)">
+    Let me pick something for you.
+  </p>
+
+  <a href="{% url 'random_recipe' %}" class="mb-sheet-action" data-no-progress="1">
+    <div class="mb-sheet-icon" style="background:linear-gradient(135deg,var(--mb-cyan),var(--mb-purple))">
+      <i class="fa-solid fa-dice"></i>
+    </div>
+    <div class="flex-grow-1 text-start">
+      <div class="fw-bold">Surprise me</div>
+      <div class="small" style="color:var(--mb-muted)">A random recipe, right now</div>
+    </div>
+    <i class="fa-solid fa-chevron-right" style="color:var(--mb-muted)"></i>
+  </a>
+
+  <div class="mt-3">
+    <div class="small mb-2" style="color:var(--mb-muted)">
+      <i class="fa-solid fa-fire me-1" style="color:var(--mb-coral)"></i> Trending categories
+    </div>
+    <div class="d-flex flex-wrap gap-2">
+      <a href="{% url 'category' 'Chicken' %}"  class="mb-chip-soft">Chicken</a>
+      <a href="{% url 'category' 'Beef' %}"     class="mb-chip-soft">Beef</a>
+      <a href="{% url 'category' 'Dessert' %}"  class="mb-chip-soft">Dessert</a>
+      <a href="{% url 'category' 'Seafood' %}"  class="mb-chip-soft">Seafood</a>
+      <a href="{% url 'category' 'Vegetarian' %}" class="mb-chip-soft">Vegetarian</a>
+      <a href="{% url 'category' 'Pasta' %}"    class="mb-chip-soft">Pasta</a>
+    </div>
+  </div>
+
+</div>
