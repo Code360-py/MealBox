@@ -1,0 +1,4 @@
+build/
+*.idsig
+debug.keystore
+lib/android.jar

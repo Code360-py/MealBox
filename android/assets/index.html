@@ -1,0 +1,1104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>MealBox</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+
+  <style>
+    /* Occasion Particle Sprinkles Canvas Overlay */
+    #occasionCanvas {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 1035;
+      display: none;
+    }
+  </style>
+</head>
+<body class="mb-app">
+  <div id="ptrFloatingBadge"><i class="fa-solid fa-arrows-rotate"></i></div>
+
+  <!-- Interactive Occasion Sprinkles Engine Canvas -->
+  <canvas id="occasionCanvas"></canvas>
+
+  <!-- Top Navigation Header -->
+  <header class="mb-topbar">
+    <div class="mb-container">
+      <button class="mb-icon-btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#mbSidebar" aria-label="Menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+
+      <a href="javascript:void(0)" onclick="navTab('home')" class="mb-brand">
+        <i class="fa-solid fa-utensils"></i>
+        Meal<span class="accent-1">Box</span>
+      </a>
+
+      <button class="mb-icon-btn" type="button" onclick="navTab('account')" aria-label="Settings">
+        <i class="fa-solid fa-sliders"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Offcanvas Navigation Drawer -->
+  <aside class="offcanvas offcanvas-start mb-sidebar" tabindex="-1" id="mbSidebar">
+    <div class="offcanvas-header">
+      <div class="mb-brand"><i class="fa-solid fa-utensils"></i> Meal<span class="accent-1">Box</span></div>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <div class="offcanvas-body d-flex flex-column">
+      <div class="small fw-bold text-uppercase text-sub mb-2">Discover</div>
+      <nav class="nav flex-column gap-1 mb-3">
+        <a class="nav-link" href="javascript:void(0)" onclick="navTab('home'); closeSidebar();"><i class="fa-solid fa-house"></i> Home</a>
+        <a class="nav-link" href="javascript:void(0)" onclick="navTab('search'); closeSidebar();"><i class="fa-solid fa-magnifying-glass"></i> Search</a>
+        <a class="nav-link" href="javascript:void(0)" onclick="navTab('bookmarks'); closeSidebar();"><i class="fa-solid fa-bookmark"></i> Saved Recipes</a>
+        <a class="nav-link" href="javascript:void(0)" onclick="navTab('account'); closeSidebar();"><i class="fa-solid fa-gear"></i> Settings</a>
+      </nav>
+
+      <div class="small fw-bold text-uppercase text-sub mb-2">Occasions</div>
+      <nav class="nav flex-column gap-1 mb-3">
+        <a class="nav-link" href="javascript:void(0)" onclick="openOccasion('christmas'); closeSidebar();">
+          <i class="fa-solid fa-snowflake text-danger"></i> Christmas
+        </a>
+        <a class="nav-link" href="javascript:void(0)" onclick="openOccasion('diwali'); closeSidebar();">
+          <i class="fa-solid fa-fire text-warning"></i> Diwali
+        </a>
+        <a class="nav-link" href="javascript:void(0)" onclick="openOccasion('birthday'); closeSidebar();">
+          <i class="fa-solid fa-cake-candles text-primary"></i> Birthday
+        </a>
+      </nav>
+
+      <div class="mt-auto pt-4 text-center small text-sub">
+        Powered by TheMealDB API
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content Panes -->
+  <main class="mb-content">
+
+    <!-- HOME TAB -->
+    <div id="pane-home" class="view-pane active">
+      <div class="mb-hero">
+        <h2>Recipes</h2>
+        <p>Browse over 1,200 delicious global recipes.</p>
+      </div>
+
+      <button class="btn btn-warning w-100 mb-4 py-2" onclick="navTab('search')">
+        <i class="fa-solid fa-magnifying-glass me-2"></i> Search Recipes
+      </button>
+
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="m-0"><i class="fa-solid fa-layer-group me-2" style="color:var(--mb-cyan)"></i>Categories</h5>
+        <span class="badge bg-secondary" id="activeDietaryBadge">All</span>
+      </div>
+      <div class="row g-3" id="categoriesRow"></div>
+    </div>
+
+    <!-- SEARCH TAB -->
+    <div id="pane-search" class="view-pane">
+      <div class="mb-hero">
+        <h2>Search Recipes</h2>
+        <p>Type a dish name to explore recipes.</p>
+      </div>
+
+      <div class="input-group mb-3">
+        <input type="text" id="searchInput" class="form-control" placeholder="Search by meal name..." onkeyup="onSearchInput(event)">
+        <button class="btn btn-warning px-3" onclick="triggerSearch()"><i class="fa-solid fa-arrow-right"></i></button>
+      </div>
+
+      <div class="row g-3" id="searchResultsRow">
+        <div class="col-12 text-center py-5 text-sub">
+          <i class="fa-solid fa-utensils fa-2x mb-2"></i>
+          <div>Type above to search.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SAVED TAB -->
+    <div id="pane-bookmarks" class="view-pane">
+      <div class="mb-hero">
+        <h2><i class="fa-solid fa-bookmark me-2" style="color:var(--mb-cyan)"></i>Saved Meals</h2>
+        <p>Your saved favorites</p>
+      </div>
+      <div class="row g-3" id="bookmarksRow"></div>
+    </div>
+
+    <!-- OCCASION / CATEGORY VIEW -->
+    <div id="pane-occasion" class="view-pane">
+      <div id="occasionHero"></div>
+      <div class="row g-3" id="occasionRow"></div>
+    </div>
+
+    <!-- RECIPE VIEW -->
+    <div id="pane-recipe" class="view-pane">
+      <div id="recipeDetailsContainer"></div>
+    </div>
+
+    <!-- PROFILE & ADVANCED SETTINGS TAB -->
+    <div id="pane-account" class="view-pane">
+      <div class="card p-4 text-center mb-3">
+        <div style="font-size: 3rem; color: var(--mb-cyan);"><i class="fa-solid fa-circle-user"></i></div>
+        <h4 class="mt-2 mb-0">Chef Profile</h4>
+        <p class="small text-sub">MealBox v2.0</p>
+
+        <div class="d-flex justify-content-center gap-4 mt-3 pt-3 border-top" style="border-color: var(--mb-border) !important;">
+          <div>
+            <div class="fw-bold fs-5" id="accountBookmarkCount">0</div>
+            <div class="small text-sub">Saved</div>
+          </div>
+          <div>
+            <div class="fw-bold fs-5 text-success" id="pingBadge"><i class="fa-solid fa-wifi"></i></div>
+            <div class="small text-sub" id="pingText">Online</div>
+          </div>
+          <div>
+            <div class="fw-bold fs-5 text-info" id="storageUsageBadge">~0 KB</div>
+            <div class="small text-sub">Storage</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 1: APPEARANCE -->
+      <h6 class="text-uppercase small fw-bold text-sub px-1 mb-2">Appearance</h6>
+      <div class="settings-group mb-3">
+        <div class="settings-item">
+          <div>
+            <div class="settings-item-label">
+              <i class="fa-solid fa-circle-half-stroke" style="color:var(--mb-cyan)"></i>
+              <span>Theme Mode</span>
+            </div>
+            <div class="settings-subtext">Auto system or fixed theme</div>
+          </div>
+          <select id="themeSelector" class="form-select form-select-sm w-auto" onchange="changeTheme(this.value)">
+            <option value="system">Auto (System)</option>
+            <option value="light">Light Theme</option>
+            <option value="dark">Dark Theme</option>
+          </select>
+        </div>
+
+        <div class="settings-item" id="amoledSettingRow">
+          <div>
+            <div class="settings-item-label">
+              <i class="fa-solid fa-moon text-light"></i>
+              <span>AMOLED Pure Black</span>
+            </div>
+            <div class="settings-subtext">True black #000000 for OLED screens</div>
+          </div>
+          <div class="form-check form-switch m-0 p-0">
+            <input class="form-check-input" type="checkbox" id="amoledToggle" onchange="toggleAmoled(this.checked)">
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 2: BACKUP & DATA -->
+      <h6 class="text-uppercase small fw-bold text-sub px-1 mb-2">Backup & Storage</h6>
+      <div class="settings-group mb-3">
+        <div class="settings-item" onclick="openBackupManager()" style="cursor:pointer;">
+          <div class="settings-item-label">
+            <i class="fa-solid fa-database text-info"></i>
+            <div>
+              <span>Backup & Restore Saved Meals</span>
+              <div class="settings-subtext">Save backup to Downloads or paste JSON</div>
+            </div>
+          </div>
+          <i class="fa-solid fa-chevron-right small text-sub"></i>
+        </div>
+
+        <div class="settings-item" onclick="promptClearSearchHistory()" style="cursor:pointer;">
+          <div class="settings-item-label">
+            <i class="fa-solid fa-eraser text-warning"></i>
+            <div>
+              <span>Clear Search Cache</span>
+              <div class="settings-subtext">Remove all recently searched keywords</div>
+            </div>
+          </div>
+          <i class="fa-solid fa-chevron-right small text-sub"></i>
+        </div>
+
+        <div class="settings-item" onclick="promptResetAppData()" style="cursor:pointer;">
+          <div class="settings-item-label">
+            <i class="fa-solid fa-trash text-danger"></i>
+            <div>
+              <span class="text-danger">Reset All Local Data</span>
+              <div class="settings-subtext">Clears all bookmarks, search cache, and theme settings</div>
+            </div>
+          </div>
+          <i class="fa-solid fa-chevron-right small text-sub"></i>
+        </div>
+      </div>
+
+      <!-- SECTION 3: DIAGNOSTICS -->
+      <h6 class="text-uppercase small fw-bold text-sub px-1 mb-2">Diagnostics</h6>
+      <div class="settings-group mb-4">
+        <div class="settings-item" onclick="checkApiLatency()" style="cursor:pointer;">
+          <div class="settings-item-label">
+            <i class="fa-solid fa-signal" style="color:var(--mb-cyan)"></i>
+            <div>
+              <span>API Ping & Network Test</span>
+              <div class="settings-subtext" id="latencyResult">Tap to test TheMealDB connection latency</div>
+            </div>
+          </div>
+          <i class="fa-solid fa-rotate-right small text-sub"></i>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Bottom Navigation -->
+  <nav class="mb-bottomtabs">
+    <div class="mb-tab active" id="tab-home" onclick="navTab('home')">
+      <i class="fa-solid fa-house"></i><span>Home</span>
+    </div>
+    <div class="mb-tab" id="tab-search" onclick="navTab('search')">
+      <i class="fa-solid fa-magnifying-glass"></i><span>Search</span>
+    </div>
+    <div class="mb-tab" id="tab-bookmarks" onclick="navTab('bookmarks')">
+      <i class="fa-solid fa-bookmark"></i><span>Saved</span>
+    </div>
+    <div class="mb-tab" id="tab-account" onclick="navTab('account')">
+      <i class="fa-solid fa-user"></i><span>Profile</span>
+    </div>
+  </nav>
+
+  <!-- Smart Assistant FAB -->
+  <button id="mbAssistantFab" class="mb-fab" type="button" onclick="openAssistant()">
+    <i class="fa-solid fa-wand-magic-sparkles"></i>
+  </button>
+  <div id="mbAssistantBackdrop" class="mb-sheet-backdrop" onclick="closeAssistant()"></div>
+  <div id="mbAssistantSheet" class="mb-sheet">
+    <div class="mb-sheet-handle"></div>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h5 class="fw-bold mb-0"><i class="fa-solid fa-wand-magic-sparkles text-info me-2"></i>Smart Assistant</h5>
+      <button type="button" class="btn-close" onclick="closeAssistant()"></button>
+    </div>
+
+    <!-- Quick Surprise Card -->
+    <div class="card p-3 mb-3 cursor-pointer" onclick="fetchRandomRecipe(); closeAssistant();">
+      <div class="d-flex align-items-center gap-3">
+        <i class="fa-solid fa-dice fs-2 text-warning"></i>
+        <div>
+          <div class="fw-bold">Surprise Me</div>
+          <div class="small text-sub">Pick a random dish tailored to your preference</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Culinary Preferences Inside Assistant -->
+    <div class="card p-3 mb-3">
+      <h6 class="fw-bold mb-2"><i class="fa-solid fa-utensils me-2 text-warning"></i>Culinary Preferences</h6>
+      <div class="mb-3">
+        <label class="form-label small text-sub mb-1">Dietary Focus</label>
+        <select id="asstDietarySelect" class="form-select form-select-sm" onchange="changeDietaryFilter(this.value)">
+          <option value="all">All Dishes (No Filter)</option>
+          <option value="Vegetarian">Vegetarian</option>
+          <option value="Seafood">Seafood</option>
+          <option value="Chicken">Chicken</option>
+          <option value="Beef">Beef</option>
+          <option value="Dessert">Dessert</option>
+        </select>
+      </div>
+      <div>
+        <label class="form-label small text-sub mb-1">Recipe Units</label>
+        <select id="asstUnitSelect" class="form-select form-select-sm" onchange="changeUnitSystem(this.value)">
+          <option value="metric">Metric (g / ml / kg)</option>
+          <option value="imperial">Imperial (cups / oz / lbs)</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Backup & Restore Modal -->
+  <div class="modal fade" id="backupModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content" style="background:var(--mb-surface); color:var(--mb-text); border:1px solid var(--mb-border);">
+        <div class="modal-header border-bottom" style="border-color:var(--mb-border) !important;">
+          <h5 class="modal-title fw-bold"><i class="fa-solid fa-database text-info me-2"></i>Backup Manager</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <p class="small text-sub mb-2">Save backup directly to phone storage or copy JSON data:</p>
+          <div class="d-flex gap-2 mb-3">
+            <button class="btn btn-outline-custom flex-grow-1" onclick="exportBookmarksFile()"><i class="fa-solid fa-download me-1 text-info"></i> Save File</button>
+            <button class="btn btn-outline-custom flex-grow-1" onclick="copyBookmarksJSON()"><i class="fa-solid fa-copy me-1 text-warning"></i> Copy JSON</button>
+          </div>
+
+          <label class="form-label small text-sub mb-1">Restore from JSON</label>
+          <textarea id="importJsonTextarea" class="form-control mb-2" rows="4" placeholder="Paste your backup JSON array here..."></textarea>
+          <button class="btn btn-warning w-100" onclick="applyJsonImport()"><i class="fa-solid fa-upload me-1"></i> Restore Bookmarks</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirmation Modal -->
+  <div class="modal fade" id="confirmModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content" style="background:var(--mb-surface); color:var(--mb-text); border:1px solid var(--mb-border);">
+        <div class="modal-header border-bottom" style="border-color:var(--mb-border) !important;">
+          <h5 class="modal-title fw-bold text-danger" id="confirmModalTitle">Confirm Action</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <p id="confirmModalBody" class="small mb-0 text-sub"></p>
+        </div>
+        <div class="modal-footer border-top" style="border-color:var(--mb-border) !important;">
+          <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-danger btn-sm" id="confirmModalExecuteBtn">Proceed</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const API = "https://www.themealdb.com/api/json/v1/1";
+    let bookmarks = JSON.parse(localStorage.getItem('mb_bookmarks') || "[]");
+
+    /* ========================================================
+       OCCASION SPRINKLES & PARTICLE ENGINE
+       ======================================================== */
+    const canvas = document.getElementById('occasionCanvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    let particleAnimationId = null;
+    let activeOccasionType = null;
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function stopSprinkles() {
+      if (particleAnimationId) cancelAnimationFrame(particleAnimationId);
+      particleAnimationId = null;
+      activeOccasionType = null;
+      particles = [];
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      canvas.style.display = 'none';
+    }
+
+    function startSprinkles(type) {
+      stopSprinkles();
+      activeOccasionType = type;
+      canvas.style.display = 'block';
+      const N = type === 'diwali' ? 50 : (type === 'christmas' ? 45 : 40);
+
+      particles = [];
+      for (let i = 0; i < N; i++) {
+        particles.push(createParticle(type));
+      }
+      loopSprinkles();
+    }
+
+    function createParticle(type) {
+      if (type === 'christmas') {
+        // Snowflakes: gentle, drifting white circles
+        return {
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          radius: Math.random() * 3.5 + 1.2,
+          speedY: Math.random() * 1.5 + 0.8,
+          speedX: Math.random() * 1 - 0.5,
+          opacity: Math.random() * 0.7 + 0.3,
+          color: '#ffffff'
+        };
+      } else if (type === 'diwali') {
+        // Golden Diya Sparks & Embers: upward floating sparklets with twinkling glows
+        const colors = ['#ffb43c', '#ffd700', '#ff5470', '#ff9900', '#ffffff'];
+        return {
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          radius: Math.random() * 2.8 + 1,
+          speedY: -(Math.random() * 1.8 + 0.6), // upward floating
+          speedX: (Math.random() - 0.5) * 1.2,
+          opacity: Math.random() * 0.8 + 0.2,
+          flicker: Math.random() * 0.05 + 0.01,
+          color: colors[Math.floor(Math.random() * colors.length)]
+        };
+      } else {
+        // Birthday: multi-colored fluttering celebratory confetti pieces
+        const colors = ['#00e5ff', '#a855f7', '#ff2d92', '#22ff88', '#ffb43c', '#ffd700'];
+        return {
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          w: Math.random() * 7 + 4,
+          h: Math.random() * 12 + 6,
+          speedY: Math.random() * 2.2 + 1.2,
+          speedX: Math.random() * 2 - 1,
+          rotation: Math.random() * 360,
+          rotationSpeed: Math.random() * 6 - 3,
+          color: colors[Math.floor(Math.random() * colors.length)]
+        };
+      }
+    }
+
+    function loopSprinkles() {
+      if (!activeOccasionType) return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      particles.forEach(p => {
+        if (activeOccasionType === 'christmas') {
+          // Draw Snowflake
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(255, 255, 255, ${p.opacity})`;
+          ctx.shadowBlur = 4;
+          ctx.shadowColor = '#ffffff';
+          ctx.fill();
+
+          p.y += p.speedY;
+          p.x += p.speedX;
+          if (p.y > canvas.height) { p.y = -10; p.x = Math.random() * canvas.width; }
+          if (p.x > canvas.width) p.x = 0;
+          if (p.x < 0) p.x = canvas.width;
+
+        } else if (activeOccasionType === 'diwali') {
+          // Draw Glowing Firework Sparkle
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fillStyle = p.color;
+          ctx.shadowBlur = 8;
+          ctx.shadowColor = p.color;
+          ctx.fill();
+
+          p.y += p.speedY;
+          p.x += p.speedX;
+          p.opacity += p.flicker;
+          if (p.opacity > 1 || p.opacity < 0.2) p.flicker = -p.flicker;
+
+          if (p.y < -10) { p.y = canvas.height + 10; p.x = Math.random() * canvas.width; }
+
+        } else {
+          // Draw Birthday Confetti
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate((p.rotation * Math.PI) / 180);
+          ctx.fillStyle = p.color;
+          ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+          ctx.restore();
+
+          p.y += p.speedY;
+          p.x += p.speedX;
+          p.rotation += p.rotationSpeed;
+          if (p.y > canvas.height) { p.y = -15; p.x = Math.random() * canvas.width; }
+        }
+      });
+
+      particleAnimationId = requestAnimationFrame(loopSprinkles);
+    }
+
+    // Unified Theme Engine
+    function resolveSystemTheme() {
+      if (window.AndroidTheme && typeof window.AndroidTheme.isSystemDark === 'function') {
+        return window.AndroidTheme.isSystemDark() ? 'dark' : 'light';
+      }
+      return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+
+    function applyTheme() {
+      const mode = localStorage.getItem('mb_theme') || 'system';
+      const selector = document.getElementById('themeSelector');
+      if (selector) selector.value = mode;
+
+      let effectiveTheme = mode;
+      if (mode === 'system') effectiveTheme = resolveSystemTheme();
+
+      document.documentElement.setAttribute('data-theme', effectiveTheme);
+
+      const isAmoled = localStorage.getItem('mb_amoled') === 'true';
+      const amoledToggle = document.getElementById('amoledToggle');
+      const amoledRow = document.getElementById('amoledSettingRow');
+
+      if (amoledToggle) amoledToggle.checked = isAmoled;
+      if (effectiveTheme === 'dark') {
+        if (amoledRow) amoledRow.style.display = 'flex';
+        if (isAmoled) document.documentElement.setAttribute('data-amoled', 'true');
+        else document.documentElement.removeAttribute('data-amoled');
+      } else {
+        if (amoledRow) amoledRow.style.display = 'none';
+        document.documentElement.removeAttribute('data-amoled');
+      }
+    }
+
+    function changeTheme(mode) {
+      localStorage.setItem('mb_theme', mode);
+      applyTheme();
+    }
+
+    function toggleAmoled(val) {
+      localStorage.setItem('mb_amoled', val);
+      applyTheme();
+    }
+
+    // Assistant Preferences
+    function changeDietaryFilter(val) {
+      localStorage.setItem('mb_dietary', val);
+      document.getElementById('activeDietaryBadge').innerText = val === 'all' ? 'All' : val;
+      loadCategories();
+    }
+    function changeUnitSystem(val) {
+      localStorage.setItem('mb_units', val);
+    }
+
+    function initAssistantPreferences() {
+      const dietary = localStorage.getItem('mb_dietary') || 'all';
+      const dietarySelect = document.getElementById('asstDietarySelect');
+      if (dietarySelect) dietarySelect.value = dietary;
+      document.getElementById('activeDietaryBadge').innerText = dietary === 'all' ? 'All' : dietary;
+
+      const units = localStorage.getItem('mb_units') || 'metric';
+      const unitsSelect = document.getElementById('asstUnitSelect');
+      if (unitsSelect) unitsSelect.value = units;
+
+      calculateStorageUsage();
+    }
+
+    function calculateStorageUsage() {
+      let totalBytes = 0;
+      for (let x in localStorage) {
+        if (localStorage.hasOwnProperty(x)) {
+          totalBytes += ((localStorage[x].length + x.length) * 2);
+        }
+      }
+      const kb = (totalBytes / 1024).toFixed(1);
+      const badge = document.getElementById('storageUsageBadge');
+      if (badge) badge.innerText = `${kb} KB`;
+    }
+
+    async function checkApiLatency() {
+      const resEl = document.getElementById('latencyResult');
+      resEl.innerText = "Pinging TheMealDB API...";
+      const start = performance.now();
+      try {
+        const res = await fetch(`${API}/categories.php`, { cache: "no-store" });
+        const latency = Math.round(performance.now() - start);
+        if (res.ok) {
+          resEl.innerText = `Healthy (${latency} ms response)`;
+          resEl.style.color = latency < 500 ? "#22ff88" : "#ffb43c";
+          document.getElementById('pingBadge').innerHTML = '<i class="fa-solid fa-check text-success"></i>';
+          document.getElementById('pingText').innerText = `${latency}ms`;
+        } else {
+          resEl.innerText = "HTTP Error: Status " + res.status;
+        }
+      } catch (e) {
+        resEl.innerText = "Connection Failed / Offline";
+        resEl.style.color = "#ff5470";
+        document.getElementById('pingBadge').innerHTML = '<i class="fa-solid fa-triangle-exclamation text-danger"></i>';
+        document.getElementById('pingText').innerText = "Offline";
+      }
+    }
+
+    // FUNCTIONAL BACKUP & EXPORT
+    let backupModalInstance = null;
+    function openBackupManager() {
+      if (!backupModalInstance) {
+        backupModalInstance = new bootstrap.Modal(document.getElementById('backupModal'));
+      }
+      document.getElementById('importJsonTextarea').value = "";
+      backupModalInstance.show();
+    }
+
+    function exportBookmarksFile() {
+      if (!bookmarks.length) {
+        alert("No bookmarks saved to export!");
+        return;
+      }
+      const jsonStr = JSON.stringify(bookmarks, null, 2);
+
+      // 1. Direct native Android file save into Downloads
+      if (window.AndroidTheme && typeof window.AndroidTheme.saveBackupFile === 'function') {
+        const success = window.AndroidTheme.saveBackupFile(jsonStr);
+        if (success) {
+          if (backupModalInstance) backupModalInstance.hide();
+          return;
+        }
+      }
+
+      // 2. Clipboard fallback
+      copyBookmarksJSON();
+    }
+
+    function copyBookmarksJSON() {
+      if (!bookmarks.length) {
+        alert("No bookmarks saved!");
+        return;
+      }
+      const jsonStr = JSON.stringify(bookmarks, null, 2);
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(jsonStr).then(() => {
+          alert("Backup JSON copied to clipboard!");
+        }).catch(() => {
+          prompt("Copy your backup data:", jsonStr);
+        });
+      } else {
+        prompt("Copy your backup data:", jsonStr);
+      }
+    }
+
+    function applyJsonImport() {
+      const text = document.getElementById('importJsonTextarea').value.trim();
+      if (!text) {
+        alert("Please paste valid JSON data.");
+        return;
+      }
+      try {
+        const parsed = JSON.parse(text);
+        if (Array.isArray(parsed)) {
+          const existingIds = new Set(bookmarks.map(b => b.meal_id));
+          let count = 0;
+          parsed.forEach(item => {
+            if (item.meal_id && item.meal_name && !existingIds.has(item.meal_id)) {
+              bookmarks.push(item);
+              count++;
+            }
+          });
+          localStorage.setItem('mb_bookmarks', JSON.stringify(bookmarks));
+          calculateStorageUsage();
+          document.getElementById('accountBookmarkCount').innerText = bookmarks.length;
+          alert(`Success! Imported ${count} saved meals.`);
+          if (backupModalInstance) backupModalInstance.hide();
+        } else {
+          alert("Invalid data format. Expected an array of meals.");
+        }
+      } catch (e) {
+        alert("Invalid JSON format. Check your input.");
+      }
+    }
+
+    // FUNCTIONAL IN-APP CONFIRMATIONS
+    let confirmModalInstance = null;
+    function showConfirmation(title, message, onConfirm) {
+      if (!confirmModalInstance) {
+        confirmModalInstance = new bootstrap.Modal(document.getElementById('confirmModal'));
+      }
+      document.getElementById('confirmModalTitle').innerText = title;
+      document.getElementById('confirmModalBody').innerText = message;
+      
+      const btn = document.getElementById('confirmModalExecuteBtn');
+      btn.onclick = () => {
+        confirmModalInstance.hide();
+        onConfirm();
+      };
+      confirmModalInstance.show();
+    }
+
+    function promptClearSearchHistory() {
+      showConfirmation(
+        "Clear Search Cache",
+        "Are you sure you want to remove all saved keyword history?",
+        () => {
+          localStorage.removeItem('mb_recent_searches');
+          localStorage.removeItem('mb_history');
+          calculateStorageUsage();
+          alert("Search cache successfully cleared.");
+        }
+      );
+    }
+
+    function promptResetAppData() {
+      showConfirmation(
+        "Reset All Data",
+        "This will permanently erase all saved bookmarks, cache, and preferences. Continue?",
+        () => {
+          localStorage.clear();
+          bookmarks = [];
+          applyTheme();
+          initAssistantPreferences();
+          document.getElementById('accountBookmarkCount').innerText = "0";
+          calculateStorageUsage();
+          alert("All local data has been reset.");
+          navTab('home');
+        }
+      );
+    }
+
+    
+    // In-App Navigation Stack for Android Hardware Back Key
+    let navHistory = ["home"];
+
+    function handleAppBackPress() {
+      // 1. Close assistant sheet if open
+      const sheet = document.getElementById("mbAssistantSheet");
+      if (sheet && sheet.classList.contains("is-open")) {
+        closeAssistant();
+        return;
+      }
+
+      // 2. Close backup modal if open
+      if (backupModalInstance && document.getElementById("backupModal").classList.contains("show")) {
+        backupModalInstance.hide();
+        return;
+      }
+
+      // 3. Pop view stack
+      if (navHistory.length > 1) {
+        navHistory.pop(); // Remove current view
+        const prev = navHistory[navHistory.length - 1];
+        navTab(prev, false);
+      } else {
+        // Exit prompt
+        if (window.AndroidTheme && typeof window.AndroidTheme.exitApp === "function") {
+          window.AndroidTheme.exitApp();
+        }
+      }
+    }
+
+    function navTab(id, push = true) {
+      if (push && navHistory[navHistory.length - 1] !== id) { navHistory.push(id); }
+      stopSprinkles(); // Stop sprinkles on tab switch
+
+      document.querySelectorAll('.view-pane').forEach(p => p.classList.remove('active'));
+      const targetPane = document.getElementById(`pane-${id}`);
+      if (targetPane) targetPane.classList.add('active');
+
+      document.querySelectorAll('.mb-tab').forEach(t => t.classList.remove('active'));
+      const targetTab = document.getElementById(`tab-${id}`);
+      if (targetTab) targetTab.classList.add('active');
+
+      window.scrollTo(0, 0);
+
+      if (id === 'bookmarks') renderBookmarks();
+      if (id === 'account') {
+        document.getElementById('accountBookmarkCount').innerText = bookmarks.length;
+        calculateStorageUsage();
+      }
+    }
+
+    function closeSidebar() {
+      const sb = bootstrap.Offcanvas.getInstance(document.getElementById('mbSidebar'));
+      if (sb) sb.hide();
+    }
+
+    async function loadCategories() {
+      const row = document.getElementById('categoriesRow');
+      row.innerHTML = '<div class="col-12 text-center py-5 text-sub"><i class="fa-solid fa-spinner fa-spin fa-2x"></i></div>';
+      try {
+        const res = await fetch(`${API}/categories.php`);
+        const data = await res.json();
+        const prefFilter = localStorage.getItem('mb_dietary') || 'all';
+
+        let cats = data.categories;
+        if (prefFilter !== 'all') {
+          cats = cats.filter(c => c.strCategory === prefFilter || c.strCategory === 'Dessert');
+        }
+
+        row.innerHTML = cats.map(c => `
+          <div class="col-6 col-md-4 col-lg-3 d-flex align-items-stretch">
+            <div class="card w-100 text-center" onclick="openCategory('${c.strCategory}')">
+              <span class="mb-skel ratio-4x3"><img src="${c.strCategoryThumb}" alt="${c.strCategory}"></span>
+              <div class="p-2 d-flex flex-column justify-content-between">
+                <div class="fw-bold mb-2">${c.strCategory}</div>
+                <button class="btn btn-outline-custom btn-sm w-100">Browse</button>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      } catch (e) {
+        row.innerHTML = '<div class="col-12 text-danger text-center">Failed to load categories.</div>';
+      }
+    }
+
+    async function openCategory(cat) {
+      stopSprinkles();
+      navTab('occasion');
+      document.getElementById('occasionHero').innerHTML = `<div class="mb-hero"><h2>${cat}</h2><p>Browse recipes</p></div>`;
+      fetchMeals(`${API}/filter.php?c=${cat}`);
+    }
+
+    /* ========================================================
+       OCCASIONS ROUTER (Christmas, Diwali, Birthday)
+       ======================================================== */
+    async function openOccasion(type) {
+      navTab('occasion');
+      startSprinkles(type); // Activate occasion sprinkles engine
+
+      if (type === 'diwali') {
+        document.getElementById('occasionHero').innerHTML = `
+          <div class="mb-diwali-hero">
+            <h2>🪔 Diwali Specials</h2>
+            <p>Celebrate the festival of lights with festive dishes & sweets.</p>
+          </div>`;
+        fetchDiwaliMeals();
+        return;
+      }
+
+      if (type === 'christmas') {
+        document.getElementById('occasionHero').innerHTML = `
+          <div class="mb-xmas-hero">
+            <h2>🎄 Christmas Specials</h2>
+            <p>Warm festive recipes and winter holidays cuisine.</p>
+          </div>`;
+        fetchMeals(`${API}/filter.php?c=Beef`);
+        return;
+      }
+
+      if (type === 'birthday') {
+        document.getElementById('occasionHero').innerHTML = `
+          <div class="mb-birthday-hero">
+            <h2>🎂 Birthday Specials</h2>
+            <p>Cakes, chocolates, and celebration-worthy desserts.</p>
+          </div>`;
+        fetchMeals(`${API}/filter.php?c=Dessert`);
+        return;
+      }
+    }
+
+    async function fetchDiwaliMeals() {
+      const row = document.getElementById('occasionRow');
+      row.innerHTML = '<div class="col-12 text-center py-5 text-sub"><i class="fa-solid fa-spinner fa-spin fa-2x"></i></div>';
+      try {
+        // Query Indian cuisine dishes
+        const res = await fetch(`${API}/filter.php?a=Indian`);
+        const data = await res.json();
+        if (data.meals && data.meals.length) {
+          renderGrid(data.meals, row);
+        } else {
+          // Direct fallback search if filter is unavailable
+          const fallback = await fetch(`${API}/search.php?s=curry`);
+          const fallbackData = await fallback.json();
+          renderGrid(fallbackData.meals || [], row);
+        }
+      } catch (e) {
+        row.innerHTML = '<div class="col-12 text-danger text-center">Failed to load Diwali recipes.</div>';
+      }
+    }
+
+    async function fetchMeals(url) {
+      const row = document.getElementById('occasionRow');
+      row.innerHTML = '<div class="col-12 text-center py-5 text-sub"><i class="fa-solid fa-spinner fa-spin fa-2x"></i></div>';
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+        renderGrid(data.meals || [], row);
+      } catch (e) {
+        row.innerHTML = '<div class="col-12 text-danger text-center">Failed to load meals.</div>';
+      }
+    }
+
+    function renderGrid(meals, container) {
+      if (!meals.length) {
+        container.innerHTML = '<div class="col-12 text-center py-5 text-sub">No meals found.</div>';
+        return;
+      }
+      container.innerHTML = meals.map(m => `
+        <div class="col-6 col-md-4 col-lg-3 d-flex align-items-stretch">
+          <div class="card w-100 text-center" onclick="openRecipe('${m.idMeal}')">
+            <span class="mb-skel ratio-4x3"><img src="${m.strMealThumb}/preview" alt="${m.strMeal}"></span>
+            <div class="p-2 d-flex flex-column justify-content-between">
+              <div class="fw-bold text-truncate mb-2">${m.strMeal}</div>
+              <button class="btn btn-outline-custom btn-sm w-100">View</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    async function openRecipe(id) {
+      stopSprinkles();
+      navTab('recipe');
+      const box = document.getElementById('recipeDetailsContainer');
+      box.innerHTML = '<div class="col-12 text-center py-5 text-sub"><i class="fa-solid fa-spinner fa-spin fa-2x"></i></div>';
+      try {
+        const res = await fetch(`${API}/lookup.php?i=${id}`);
+        const data = await res.json();
+        const r = data.meals[0];
+        const isFav = bookmarks.some(b => b.meal_id === r.idMeal);
+
+        let ing = [];
+        for (let i = 1; i <= 20; i++) {
+          if (r[`strIngredient${i}`] && r[`strIngredient${i}`].trim()) {
+            ing.push(`<tr><td>${r[`strIngredient${i}`]}</td><td class="text-end text-sub">${r[`strMeasure${i}`] || ''}</td></tr>`);
+          }
+        }
+
+        box.innerHTML = `
+          <div class="card mb-3 overflow-hidden">
+            <span class="mb-skel ratio-16x9"><img src="${r.strMealThumb}" alt="${r.strMeal}"></span>
+          </div>
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+              <h3 class="mb-1">${r.strMeal}</h3>
+              <div class="text-sub">${r.strCategory} • ${r.strArea}</div>
+            </div>
+            <button class="btn btn-outline-custom p-3" onclick="toggleBookmark('${r.idMeal}', '${escape(r.strMeal)}', '${r.strMealThumb}')">
+              <i class="${isFav ? 'fa-solid text-warning' : 'fa-regular'} fa-bookmark fs-5"></i>
+            </button>
+          </div>
+          <div class="card p-3 mb-3">
+            <h6 class="mb-2"><i class="fa-solid fa-basket-shopping me-2 text-warning"></i>Ingredients</h6>
+            <table class="custom-table">${ing.join('')}</table>
+          </div>
+          <div class="card p-3 mb-3">
+            <h6 class="mb-2"><i class="fa-solid fa-book-atlas me-2 text-warning"></i>Instructions</h6>
+            <p class="text-sub mb-0" style="line-height: 1.7; white-space: pre-line;">${r.strInstructions}</p>
+          </div>
+        `;
+      } catch (e) {
+        box.innerHTML = '<div class="alert alert-danger">Error loading recipe.</div>';
+      }
+    }
+
+    async function fetchRandomRecipe() {
+      const dietary = localStorage.getItem('mb_dietary') || 'all';
+      try {
+        let endpoint = `${API}/random.php`;
+        if (dietary !== 'all') {
+          const res = await fetch(`${API}/filter.php?c=${dietary}`);
+          const data = await res.json();
+          if (data.meals && data.meals.length) {
+            const randomMeal = data.meals[Math.floor(Math.random() * data.meals.length)];
+            openRecipe(randomMeal.idMeal);
+            return;
+          }
+        }
+        const res = await fetch(endpoint);
+        const data = await res.json();
+        if (data.meals && data.meals[0]) openRecipe(data.meals[0].idMeal);
+      } catch (e) {}
+    }
+
+    function toggleBookmark(id, name, thumb) {
+      name = unescape(name);
+      const idx = bookmarks.findIndex(b => b.meal_id === id);
+      if (idx >= 0) {
+        bookmarks.splice(idx, 1);
+      } else {
+        bookmarks.push({ meal_id: id, meal_name: name, meal_thumb: thumb });
+      }
+      localStorage.setItem('mb_bookmarks', JSON.stringify(bookmarks));
+      calculateStorageUsage();
+      openRecipe(id);
+    }
+
+    function renderBookmarks() {
+      const row = document.getElementById('bookmarksRow');
+      if (!bookmarks.length) {
+        row.innerHTML = '<div class="col-12 text-center py-5 text-sub">No saved recipes yet.</div>';
+        return;
+      }
+      row.innerHTML = bookmarks.map(b => `
+        <div class="col-6 col-md-4 col-lg-3 d-flex align-items-stretch">
+          <div class="card w-100 text-center" onclick="openRecipe('${b.meal_id}')">
+            <span class="mb-skel ratio-4x3"><img src="${b.meal_thumb}" alt="${b.meal_name}"></span>
+            <div class="p-2 d-flex flex-column justify-content-between">
+              <div class="fw-bold text-truncate mb-2">${b.meal_name}</div>
+              <button class="btn btn-outline-danger btn-sm" onclick="event.stopPropagation(); removeBookmark('${b.meal_id}')">Remove</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function removeBookmark(id) {
+      bookmarks = bookmarks.filter(b => b.meal_id !== id);
+      localStorage.setItem('mb_bookmarks', JSON.stringify(bookmarks));
+      calculateStorageUsage();
+      renderBookmarks();
+    }
+
+    let searchTimer;
+    function onSearchInput(e) {
+      clearTimeout(searchTimer);
+      if (e.key === 'Enter') { triggerSearch(); return; }
+      const q = e.target.value.trim();
+      if (!q) return;
+      searchTimer = setTimeout(() => searchMeals(q), 400);
+    }
+
+    function triggerSearch() {
+      const q = document.getElementById('searchInput').value.trim();
+      if (q) searchMeals(q);
+    }
+
+    async function searchMeals(q) {
+      const row = document.getElementById('searchResultsRow');
+      row.innerHTML = '<div class="col-12 text-center py-5 text-sub"><i class="fa-solid fa-spinner fa-spin fa-2x"></i></div>';
+      try {
+        const res = await fetch(`${API}/search.php?s=${encodeURIComponent(q)}`);
+        const data = await res.json();
+        renderGrid(data.meals || [], row);
+      } catch (e) {
+        row.innerHTML = '<div class="col-12 text-danger text-center">Search failed.</div>';
+      }
+    }
+
+    function openAssistant() {
+      document.getElementById('mbAssistantSheet').classList.add('is-open');
+      document.getElementById('mbAssistantBackdrop').classList.add('is-open');
+    }
+    function closeAssistant() {
+      document.getElementById('mbAssistantSheet').classList.remove('is-open');
+      document.getElementById('mbAssistantBackdrop').classList.remove('is-open');
+    }
+
+    // Startup
+    applyTheme();
+    initAssistantPreferences();
+    
+    /* ========================================================
+       NATIVE DRAG PULL-TO-REFRESH HANDLER
+       ======================================================== */
+    const ptrBadge = document.getElementById("ptrFloatingBadge");
+    const ptrIcon = ptrBadge ? ptrBadge.querySelector("i") : null;
+    let isRefreshing = false;
+
+    function onNativePullMove(diffY) {
+      if (isRefreshing || !ptrBadge) return;
+      if (diffY > 30 && diffY < 240) {
+        const topPos = Math.min(85, diffY * 0.42);
+        ptrBadge.style.top = topPos + "px";
+        if (ptrIcon) ptrIcon.style.transform = "rotate(" + (diffY * 2.5) + "deg)";
+      }
+    }
+
+    async function onNativePullRelease(diffY) {
+      if (isRefreshing || !ptrBadge) return;
+      if (diffY >= 140) {
+        isRefreshing = true;
+        ptrBadge.style.top = "76px";
+        if (ptrIcon) ptrIcon.classList.add("ptr-anim-spin");
+        
+        await executeActiveRefresh();
+
+        if (ptrIcon) ptrIcon.classList.remove("ptr-anim-spin");
+        ptrBadge.style.top = "-60px";
+        isRefreshing = false;
+      } else {
+        ptrBadge.style.top = "-60px";
+      }
+    }
+
+    async function executeActiveRefresh() {
+      const activePane = document.querySelector(".view-pane.active")?.id;
+      if (activePane === "pane-home") {
+        await loadCategories();
+      } else if (activePane === "pane-bookmarks") {
+        renderBookmarks();
+      } else if (activePane === "pane-search") {
+        const q = document.getElementById("searchInput").value.trim();
+        if (q) await searchMeals(q);
+      } else if (activePane === "pane-occasion") {
+        const hero = document.getElementById("occasionHero");
+        if (hero && hero.innerText.includes("Diwali")) {
+          await fetchDiwaliMeals();
+        } else {
+          await loadCategories();
+        }
+      } else {
+        await new Promise(r => setTimeout(r, 600));
+      }
+    }
+
+    loadCategories();
+  </script>
+</body>
+</html>
