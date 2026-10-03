@@ -72,7 +72,7 @@ The repository supports dual deployment:
 | **Data Source** | [TheMealDB API](https://www.themealdb.com/api.php) |
 
 ## Repository Structure
-​MealBox/
+MealBox/
 ├── android/                   # Standalone Android native wrapper & APK pipeline
 │   ├── AndroidManifest.xml   # App manifest, permissions, launcher icon config
 │   ├── assets/               # WebView client (index.html, css/style.css)
@@ -89,51 +89,23 @@ The repository supports dual deployment:
 ├── manage.py
 ├── requirements.txt
 └── README.md
-## ​Local Setup & Development
-​1. Web App (Django)
-​# Clone the repository
+
+## Local Setup & Development
+## ​1. Web App (Django)
+'''bash
+# Clone the repository
 git clone https://github.com/Code360-py/MealBox.git
 cd MealBox
-​# Create and activate virtual environment
+
+# Create and activate virtual environment
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
-​# Install dependencies
+
+# Install dependencies
 pip install -r requirements.txt
-​# Run migrations and start development server
+
+# Run migrations and start development server
 python manage.py makemigrations
 python manage.py migrate
 python manage.py runserver
-​Open [http://127.0.0.1:8000/](http://127.0.0.1:8000/) in your browser.
-​2. Mobile App (Android Toolchain via CLI/Termux)
-​The android/ directory includes a self-contained shell script that compiles, signs, and aligns the APK using headless Android build tools without requiring Android Studio or Gradle.
-​cd ~/MealBox/android
-​# Ensure build script is executable
-chmod +x build.sh
-​# Run the build pipeline
-./build.sh
-​Upon completion, MealBox.apk is output directly inside android/ and automatically copied to your public device storage at /sdcard/Download/MealBox.apk for testing.
-
-## Authentication Model
-​MealBox uses an intentional custom session-based authentication layer rather than django.contrib.auth:
-​Password Hashing: Salted SHA-256 password hashing implemented in Meal/models.py.
-​Session Identity: Active session identity is stored under request.session['user_id'].
-​Route Protection: Custom helpers (login_user, logout_user, get_current_user, and the @login_required decorator) in Meal/auth.py handle user state and view gating.
-## ​Deployment
-​PythonAnywhere Setup
-​Create a Python 3.10 virtual environment and install requirements:
-​mkvirtualenv --python=/usr/bin/python3.10 mealbox-venv
-pip install -r ~/MealBox/requirements.txt
-​Run database migrations and collect static assets:
-​cd ~/MealBox
-python manage.py migrate
-python manage.py collectstatic --noinput
-​Set your secret key in your environment or WSGI file:
-​export DJANGO_SECRET_KEY="your-production-secret-key"
-​Configure the PythonAnywhere Web Tab:
-​Source Code: /home/<username>/MealBox
-​Working Directory: /home/<username>/MealBox
-​Virtualenv: /home/<username>/.virtualenvs/mealbox-venv
-​Static Files Mapping: URL /static/ mapped to directory /home/<username>/MealBox/staticfiles/
-​License & Credits
-​Recipe database, nutritional assets, and media endpoints provided by TheMealDB.
-​UI and mobile wrapper maintained by Xenon Studio / Code360-py.
+'''
