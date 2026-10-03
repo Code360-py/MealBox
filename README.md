@@ -71,7 +71,7 @@ The repository supports dual deployment:
 | **Styling & Assets**| Custom Neon CSS Tokens, Font Awesome 6.5+, Noto Sans (Google Fonts) |
 | **Data Source** | [TheMealDB API](https://www.themealdb.com/api.php) |
 
-Repository Structure
+## Repository Structure
 ​MealBox/
 ├── android/                   # Standalone Android native wrapper & APK pipeline
 │   ├── AndroidManifest.xml   # App manifest, permissions, launcher icon config
@@ -89,7 +89,7 @@ Repository Structure
 ├── manage.py
 ├── requirements.txt
 └── README.md
-​Local Setup & Development
+## ​Local Setup & Development
 ​1. Web App (Django)
 ​# Clone the repository
 git clone https://github.com/Code360-py/MealBox.git
@@ -113,12 +113,12 @@ chmod +x build.sh
 ./build.sh
 ​Upon completion, MealBox.apk is output directly inside android/ and automatically copied to your public device storage at /sdcard/Download/MealBox.apk for testing.
 
-Authentication Model
+## Authentication Model
 ​MealBox uses an intentional custom session-based authentication layer rather than django.contrib.auth:
 ​Password Hashing: Salted SHA-256 password hashing implemented in Meal/models.py.
 ​Session Identity: Active session identity is stored under request.session['user_id'].
 ​Route Protection: Custom helpers (login_user, logout_user, get_current_user, and the @login_required decorator) in Meal/auth.py handle user state and view gating.
-​Deployment
+## ​Deployment
 ​PythonAnywhere Setup
 ​Create a Python 3.10 virtual environment and install requirements:
 ​mkvirtualenv --python=/usr/bin/python3.10 mealbox-venv
